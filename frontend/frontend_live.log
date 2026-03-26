@@ -1,0 +1,19 @@
+
+> deer-flow-frontend@0.1.0 dev /root/deer-flow/frontend
+> next dev --turbo --port 3000
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.17.0.8:3000
+- Environments: .env.local, .env
+
+✓ Starting...
+✓ Ready in 601ms
+ GET /login 200 in 1222ms (compile: 925ms, render: 297ms)
+ GET /login 200 in 96ms (compile: 12ms, render: 84ms)
+Killed
+Persisting failed: Unable to write SST file 00000089.sst
+
+Caused by:
+    No such file or directory (os error 2)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)

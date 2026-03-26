@@ -1,0 +1,6 @@
+nohup: ignoring input
+INFO:     Started server process [30457]
+INFO:     Waiting for application startup.
+2026-02-24 14:56:20 - src.gateway.app - INFO - Starting API Gateway on 0.0.0.0:8001
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
