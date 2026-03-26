@@ -1,8 +1,13 @@
+import os
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-SECRET_KEY = "deer-flow-data-platform-secret-key-change-in-production-2026"
+# Use env var in deployments; keep a dev fallback for local startup.
+SECRET_KEY = os.getenv(
+    "DEERFLOW_JWT_SECRET_KEY",
+    "deer-flow-data-platform-secret-key-change-in-production-2026",
+)
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440  # 24 小时
 
