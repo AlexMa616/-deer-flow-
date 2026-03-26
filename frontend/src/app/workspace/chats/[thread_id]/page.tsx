@@ -309,7 +309,7 @@ export default function ChatPage() {
                     />
                     <InputBox
                       className={cn(
-                        "w-full -translate-y-4 border border-sky-200/75 bg-white/88 text-slate-900 shadow-[0_24px_70px_rgba(15,23,42,0.1)] backdrop-blur-xl",
+                        "w-full -translate-y-4 border border-slate-200/85 bg-white/92 text-slate-900 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl",
                       )}
                       isNewThread={isNewThread}
                       autoFocus={isNewThread}

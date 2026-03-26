@@ -55,7 +55,7 @@ export function MessageList({
     <Conversation
       className={cn("flex size-full flex-col justify-center", className)}
     >
-      <ConversationContent className="mx-auto w-full max-w-(--container-width-md) gap-8 pt-12">
+      <ConversationContent className="mx-auto w-full max-w-(--container-width-md) gap-6 px-1 pt-10 md:pt-12">
         {groupMessages(messages, (group) => {
           if (group.type === "human" || group.type === "assistant") {
             return (

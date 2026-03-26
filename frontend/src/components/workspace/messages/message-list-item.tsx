@@ -19,6 +19,7 @@ import {
   MessageResponse as AIElementMessageResponse,
   MessageToolbar,
 } from "@/components/ai-elements/message";
+import { AlexMark } from "@/components/brand/alex-mark";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,14 +35,14 @@ import {
   parseUploadedFiles,
   type UploadedFile,
 } from "@/core/messages/utils";
-import { formatTimeAgo } from "@/core/utils/datetime";
+import { useRehypeSplitWordsIntoSpans } from "@/core/rehype";
+import { humanMessagePlugins } from "@/core/streamdown";
 import {
   useCancelUploadJob,
   useRetryUploadJob,
   useUploadStatus,
 } from "@/core/uploads/hooks";
-import { useRehypeSplitWordsIntoSpans } from "@/core/rehype";
-import { humanMessagePlugins } from "@/core/streamdown";
+import { formatTimeAgo } from "@/core/utils/datetime";
 import { cn } from "@/lib/utils";
 
 import { CopyButton } from "../copy-button";
@@ -60,20 +61,20 @@ export function MessageListItem({
   const isHuman = message.type === "human";
   return (
     <AIElementMessage
-      className={cn("group/conversation-message relative w-full", className)}
+      className={cn("group/conversation-message relative w-full py-1", className)}
       from={isHuman ? "user" : "assistant"}
     >
       <div
         className={cn(
-          "flex items-start gap-3",
-          isHuman ? "justify-end" : "justify-start",
+          "flex items-start gap-2.5 md:gap-3.5",
+          isHuman ? "justify-end pl-12" : "justify-start pr-12",
         )}
       >
         {!isHuman && <MessageAvatar role="assistant" />}
-        <div className="min-w-0 max-w-full">
+        <div className="min-w-0 max-w-full space-y-1">
           <div
             className={cn(
-              "mb-1 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500",
+              "text-[12px] font-medium tracking-[0.02em] text-slate-500",
               isHuman ? "text-right" : "text-left",
             )}
           >
@@ -109,16 +110,23 @@ export function MessageListItem({
 
 function MessageAvatar({ role }: { role: "user" | "assistant" }) {
   const isUser = role === "user";
+  if (!isUser) {
+    return (
+      <AlexMark
+        compact
+        accent="#4285f4"
+        className="mt-1 size-8 shrink-0 rounded-xl border-slate-200 bg-white"
+      />
+    );
+  }
   return (
     <div
       className={cn(
-        "mt-1 flex size-9 shrink-0 items-center justify-center rounded-full border text-xs font-semibold shadow-sm",
-        isUser
-          ? "border-slate-200/70 bg-white text-slate-600"
-          : "border-sky-200/70 bg-gradient-to-br from-sky-500 to-indigo-500 text-white",
+        "mt-1 flex size-8 shrink-0 items-center justify-center rounded-full border text-xs font-semibold shadow-sm",
+        "border-slate-200/80 bg-white text-slate-600",
       )}
     >
-      {isUser ? "你" : "A"}
+      你
     </div>
   );
 }
@@ -313,8 +321,6 @@ function UploadedFileCard({
   file: UploadedFile;
   threadId: string;
 }) {
-  if (!threadId) return null;
-
   const { data: status } = useUploadStatus(threadId, file.filename);
   const cancelMutation = useCancelUploadJob(threadId, file.filename);
   const retryMutation = useRetryUploadJob(threadId, file.filename);

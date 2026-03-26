@@ -157,7 +157,7 @@ export function InputBox({
   return (
     <PromptInput
       className={cn(
-        "rounded-[26px] bg-white/88 shadow-[0_16px_40px_rgba(15,23,42,0.08)] backdrop-blur-sm transition-all duration-300 ease-out *:data-[slot='input-group']:rounded-[24px]",
+        "rounded-[30px] border border-slate-200/80 bg-white/92 shadow-[0_18px_48px_rgba(15,23,42,0.08)] backdrop-blur transition-all duration-300 ease-out *:data-[slot='input-group']:rounded-[28px]",
         className,
       )}
       disabled={disabled}
@@ -178,15 +178,15 @@ export function InputBox({
       </PromptInputAttachments>
       <PromptInputBody className="absolute top-0 right-0 left-0 z-3">
         <PromptInputTextarea
-          className={cn("size-full text-[15px] leading-6")}
+          className={cn("size-full text-[15px] leading-7 text-slate-800 placeholder:text-slate-400")}
           disabled={disabled}
           placeholder={t.inputBox.placeholder}
           autoFocus={autoFocus}
           defaultValue={initialValue}
         />
       </PromptInputBody>
-      <PromptInputFooter className="flex items-center justify-between gap-3 border-t border-sky-100/80 bg-white/74 px-2 py-2">
-        <PromptInputTools className="items-center gap-1 rounded-full border border-sky-100/90 bg-white px-1 py-1 shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
+      <PromptInputFooter className="flex items-center justify-between gap-3 border-t border-slate-200/80 bg-white/82 px-2.5 py-2.5">
+        <PromptInputTools className="items-center gap-1 rounded-full border border-slate-200/85 bg-white px-1 py-1 shadow-[0_6px_16px_rgba(15,23,42,0.05)]">
           {/* TODO: Add more connectors here
           <PromptInputActionMenu>
             <PromptInputActionMenuTrigger className="px-2!" />
@@ -196,7 +196,7 @@ export function InputBox({
               />
             </PromptInputActionMenuContent>
           </PromptInputActionMenu> */}
-          <AddAttachmentsButton className="rounded-full px-2! text-slate-600 hover:bg-sky-50" />
+          <AddAttachmentsButton className="rounded-full px-2! text-slate-600 hover:bg-slate-100" />
           <PromptInputActionMenu>
             <ModeHoverGuide
               mode={
@@ -208,7 +208,7 @@ export function InputBox({
                   : "flash"
               }
             >
-              <PromptInputActionMenuTrigger className="gap-1! rounded-full px-2! text-slate-600 hover:bg-sky-50">
+              <PromptInputActionMenuTrigger className="gap-1! rounded-full px-2! text-slate-600 hover:bg-slate-100">
                 <div>
                   {context.mode === "flash" && <ZapIcon className="size-3" />}
                   {context.mode === "thinking" && (
@@ -367,13 +367,13 @@ export function InputBox({
             </PromptInputActionMenuContent>
           </PromptInputActionMenu>
         </PromptInputTools>
-        <PromptInputTools className="items-center gap-2 rounded-full border border-slate-200/70 bg-white/90 px-2 py-1 shadow-sm">
+        <PromptInputTools className="items-center gap-2 rounded-full border border-slate-200/85 bg-white px-2 py-1 shadow-[0_6px_16px_rgba(15,23,42,0.05)]">
           <ModelSelector
             open={modelDialogOpen}
             onOpenChange={setModelDialogOpen}
           >
             <ModelSelectorTrigger asChild>
-              <PromptInputButton className="rounded-full px-3 text-slate-600 hover:bg-sky-50">
+              <PromptInputButton className="rounded-full px-3 text-slate-600 hover:bg-slate-100">
                 <ModelSelectorName className="text-xs font-normal">
                   {selectedModel?.display_name}
                 </ModelSelectorName>
@@ -400,7 +400,7 @@ export function InputBox({
             </ModelSelectorContent>
           </ModelSelector>
           <PromptInputSubmit
-            className="rounded-full bg-slate-900 text-white hover:bg-slate-800"
+            className="rounded-full bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-[0_6px_14px_rgba(15,23,42,0.18)] hover:brightness-110"
             disabled={disabled}
             variant="default"
             status={status}

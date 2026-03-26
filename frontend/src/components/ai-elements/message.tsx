@@ -27,7 +27,7 @@ export type MessageProps = HTMLAttributes<HTMLDivElement> & {
 export const Message = ({ className, from, ...props }: MessageProps) => (
   <div
     className={cn(
-      "group flex w-full flex-col gap-2",
+      "group flex w-full flex-col gap-3",
       from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
       className,
     )}
@@ -45,8 +45,8 @@ export const MessageContent = ({
   <div
     className={cn(
       "flex w-fit max-w-full min-w-0 flex-col gap-2 overflow-hidden",
-      "group-[.is-user]:ml-auto group-[.is-user]:max-w-[72%] group-[.is-user]:self-end group-[.is-user]:rounded-2xl group-[.is-user]:border group-[.is-user]:border-sky-200/70 group-[.is-user]:bg-gradient-to-br group-[.is-user]:from-white group-[.is-user]:via-sky-50 group-[.is-user]:to-white group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-slate-900 group-[.is-user]:shadow-[0_12px_30px_rgba(15,23,42,0.08)] group-[.is-user]:backdrop-blur",
-      "group-[.is-assistant]:max-w-[88%] group-[.is-assistant]:self-start group-[.is-assistant]:rounded-2xl group-[.is-assistant]:border group-[.is-assistant]:border-slate-200/70 group-[.is-assistant]:bg-white/70 group-[.is-assistant]:px-4 group-[.is-assistant]:py-3 group-[.is-assistant]:text-slate-900 group-[.is-assistant]:shadow-sm",
+      "group-[.is-user]:ml-auto group-[.is-user]:max-w-[74%] group-[.is-user]:self-end group-[.is-user]:rounded-[22px] group-[.is-user]:border group-[.is-user]:border-slate-200/90 group-[.is-user]:bg-[linear-gradient(180deg,#ffffff,#f7faff)] group-[.is-user]:px-4 group-[.is-user]:py-3.5 group-[.is-user]:text-slate-900 group-[.is-user]:shadow-[0_8px_22px_rgba(15,23,42,0.07)]",
+      "group-[.is-assistant]:max-w-[92%] group-[.is-assistant]:self-start group-[.is-assistant]:rounded-[22px] group-[.is-assistant]:border group-[.is-assistant]:border-slate-200/75 group-[.is-assistant]:bg-white/85 group-[.is-assistant]:px-5 group-[.is-assistant]:py-4 group-[.is-assistant]:text-slate-900 group-[.is-assistant]:shadow-[0_5px_16px_rgba(15,23,42,0.05)]",
       className,
     )}
     {...props}
@@ -307,7 +307,7 @@ export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
     <Streamdown
       className={cn(
-        "size-full text-[15px] leading-7 tracking-[0.01em] [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+        "size-full text-[15px] leading-[1.85] tracking-[0.01em] [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         className,
       )}
       {...props}
