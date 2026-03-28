@@ -210,8 +210,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="models_missing",
                 level="action",
-                title="Configure at least one model",
-                detail="Add a model entry in config.yaml so agents can run.",
+                title="请先配置至少一个模型",
+                detail="请在 config.yaml 中添加模型配置，否则智能体无法执行任务。",
             )
         )
 
@@ -220,8 +220,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="memory_disabled",
                 level="action",
-                title="Enable memory for continuity",
-                detail="Turn on memory in config.yaml to keep context across sessions.",
+                title="建议开启记忆能力",
+                detail="在 config.yaml 中启用 memory，可跨会话保留上下文连续性。",
             )
         )
     elif not memory.injection_enabled:
@@ -229,8 +229,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="memory_injection_off",
                 level="info",
-                title="Memory injection is off",
-                detail="Enable memory injection to make the agent more personalized.",
+                title="记忆注入当前已关闭",
+                detail="开启 memory injection 后，智能体可更好地个性化响应。",
             )
         )
 
@@ -239,8 +239,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="mcp_none",
                 level="info",
-                title="No MCP tools enabled",
-                detail="Enable MCP servers to expand tool capabilities.",
+                title="暂无 MCP 工具启用",
+                detail="建议启用 MCP 服务，以扩展可用工具能力。",
             )
         )
 
@@ -249,8 +249,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="vector_disabled",
                 level="info",
-                title="Vector index disabled",
-                detail="Enable vector indexing to unlock semantic search and citations.",
+                title="向量索引未启用",
+                detail="启用向量索引后可使用语义检索与引用定位能力。",
             )
         )
 
@@ -259,8 +259,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="sandbox_local",
                 level="info",
-                title="Local sandbox mode",
-                detail="Consider containerized sandbox for stronger isolation in production.",
+                title="当前为本地沙盒模式",
+                detail="生产环境建议使用容器化沙盒，以获得更强隔离性。",
             )
         )
 
@@ -270,8 +270,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="storage_cleanup",
                 level="warn",
-                title="Storage usage is growing",
-                detail="Archive or clean old uploads/outputs to keep storage lean.",
+                title="存储占用持续增长",
+                detail="建议归档或清理历史上传与产出文件，保持空间健康。",
             )
         )
 
@@ -280,8 +280,8 @@ def _build_recommendations(
             SystemRecommendation(
                 id="start_first_thread",
                 level="info",
-                title="No active threads yet",
-                detail="Start a new conversation to initialize thread data.",
+                title="当前暂无活跃会话",
+                detail="可先创建一个新对话，初始化会话与工作区数据。",
             )
         )
 

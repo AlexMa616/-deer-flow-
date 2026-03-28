@@ -100,7 +100,7 @@ export function SystemPulse({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-sky-200/70 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.25),transparent_65%),linear-gradient(145deg,#ffffff,#eef2ff)] px-3 py-3 text-slate-900 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur",
+        "relative shrink-0 overflow-hidden rounded-2xl border border-sky-200/70 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.25),transparent_65%),linear-gradient(145deg,#ffffff,#eef2ff)] px-3 py-3 text-slate-900 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur",
         className,
       )}
     >
@@ -167,7 +167,7 @@ export function SystemPulse({ className }: { className?: string }) {
               </div>
               <NumberTicker
                 value={data?.threads.count ?? 0}
-                className="text-lg font-semibold text-sky-700"
+                className="text-lg leading-none font-semibold text-sky-700"
               />
             </div>
             <div className="rounded-xl border border-slate-200/70 bg-white/70 p-2">
@@ -177,7 +177,7 @@ export function SystemPulse({ className }: { className?: string }) {
               </div>
               <NumberTicker
                 value={data?.threads.uploads.files ?? 0}
-                className="text-lg font-semibold text-indigo-600"
+                className="text-lg leading-none font-semibold text-indigo-600"
               />
             </div>
             <div className="rounded-xl border border-slate-200/70 bg-white/70 p-2">
@@ -185,7 +185,7 @@ export function SystemPulse({ className }: { className?: string }) {
                 <HardDrive className="size-3 text-emerald-500" />
                 存储
               </div>
-              <p className="text-lg font-semibold text-emerald-600">
+              <p className="text-lg leading-none font-semibold text-emerald-600">
                 {formatBytes(storageBytes)}
               </p>
             </div>
@@ -196,7 +196,7 @@ export function SystemPulse({ className }: { className?: string }) {
               </div>
               <NumberTicker
                 value={data?.memory.facts ?? 0}
-                className="text-lg font-semibold text-pink-600"
+                className="text-lg leading-none font-semibold text-pink-600"
               />
             </div>
           </div>

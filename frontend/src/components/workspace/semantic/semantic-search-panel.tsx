@@ -31,8 +31,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ShineBorder } from "@/components/ui/shine-border";
-import SpotlightCard from "@/components/ui/spotlight-card";
 import { getBackendBaseURL } from "@/core/config";
 import type {
   SemanticSearchResult,
@@ -148,7 +146,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
       <Collapsible open={open} onOpenChange={setOpen}>
         <CollapsibleTrigger asChild>
           <Button
-            className="border-sky-200/70 bg-white/80 text-slate-700 shadow-sm backdrop-blur hover:bg-white"
+            className="border-slate-200/80 bg-white text-slate-700 shadow-sm backdrop-blur hover:bg-slate-50"
             size="sm"
             variant="outline"
             type="button"
@@ -164,17 +162,12 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-3">
-          <SpotlightCard
-            className="relative overflow-hidden rounded-2xl border border-sky-200/70 bg-white/85 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur"
+          <div
+            className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/96 shadow-[0_14px_36px_rgba(15,23,42,0.08)] backdrop-blur"
             style={{
               padding: "1rem",
             }}
           >
-            <ShineBorder
-              borderWidth={1}
-              duration={12}
-              shineColor={["#7dd3fc", "#c7d2fe", "#22d3ee"]}
-            />
             <div className="relative z-10 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
@@ -210,7 +203,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                         void handleSearch();
                       }
                     }}
-                    className="h-9"
+                    className="h-9 border-slate-200/90 bg-white text-slate-700 placeholder:text-slate-400"
                   />
                   <Button
                     size="sm"
@@ -233,10 +226,10 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                       setSource(value as SemanticSourceFilter)
                     }
                   >
-                    <SelectTrigger className="h-7 w-[92px] text-xs">
+                    <SelectTrigger className="h-7 w-[92px] border-slate-200/90 bg-white text-xs text-slate-700">
                       <SelectValue placeholder="来源" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="border-slate-200 bg-white text-slate-700">
                       {SOURCE_OPTIONS.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
@@ -250,10 +243,10 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                       setScope(value as "thread" | "global")
                     }
                   >
-                    <SelectTrigger className="h-7 w-[108px] text-xs">
+                    <SelectTrigger className="h-7 w-[108px] border-slate-200/90 bg-white text-xs text-slate-700">
                       <SelectValue placeholder="范围" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="border-slate-200 bg-white text-slate-700">
                       <SelectItem value="thread">当前会话</SelectItem>
                       <SelectItem value="global">全局</SelectItem>
                     </SelectContent>
@@ -262,10 +255,10 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                     value={String(topK)}
                     onValueChange={(value) => setTopK(Number(value))}
                   >
-                    <SelectTrigger className="h-7 w-[72px] text-xs">
+                    <SelectTrigger className="h-7 w-[72px] border-slate-200/90 bg-white text-xs text-slate-700">
                       <SelectValue placeholder="TopK" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="border-slate-200 bg-white text-slate-700">
                       {[5, 8, 12, 20].map((count) => (
                         <SelectItem key={count} value={String(count)}>
                           Top {count}
@@ -277,10 +270,10 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                     value={filterText}
                     onChange={(event) => setFilterText(event.target.value)}
                     placeholder="结果过滤"
-                    className="h-7 w-[120px] text-xs"
+                    className="h-7 w-[120px] border-slate-200/90 bg-white text-xs text-slate-700 placeholder:text-slate-400"
                   />
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 text-xs text-slate-500">
                   <span>置信阈值</span>
                   <input
                     type="range"
@@ -300,7 +293,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <div className="flex items-center justify-between text-xs text-slate-500">
                   <span>
                     {searchMutation.isPending
                       ? "正在检索..."
@@ -315,13 +308,13 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                     检索失败：{searchMutation.error.message}
                   </div>
                 ) : null}
-                <ScrollArea className="h-[240px] rounded-xl border border-border/60 bg-background/40 p-2">
+                <ScrollArea className="h-[240px] rounded-xl border border-slate-200/80 bg-white p-2">
                   {searchMutation.isPending ? (
-                    <div className="p-3 text-xs text-muted-foreground">
+                    <div className="p-3 text-xs text-slate-500">
                       正在扫描向量空间...
                     </div>
                   ) : filteredResults.length === 0 ? (
-                    <div className="p-3 text-xs text-muted-foreground">
+                    <div className="p-3 text-xs text-slate-500">
                       {lastQuery ? "暂无匹配结果" : "请输入关键词开始检索"}
                     </div>
                   ) : (
@@ -347,7 +340,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                         return (
                           <div
                             key={`${result.filename}-${result.chunk_index}-${index}`}
-                            className="group relative rounded-lg border border-border/60 bg-card/70 p-3 text-xs shadow-sm transition hover:border-sky-400/60"
+                            className="group relative rounded-lg border border-slate-200/75 bg-slate-50/72 p-3 text-xs shadow-sm transition hover:border-sky-300/70 hover:bg-white"
                           >
                             <div className="flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2">
@@ -371,12 +364,12 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                                   </Badge>
                                 ) : null}
                               </div>
-                              <span className="text-[10px] text-muted-foreground">
+                              <span className="text-[10px] text-slate-500">
                                 {(score * 100).toFixed(1)}%
                               </span>
                             </div>
                             <Progress value={score * 100} className="mt-2 h-1" />
-                            <p className="mt-2 line-clamp-3 text-[11px] text-muted-foreground">
+                            <p className="mt-2 line-clamp-3 text-[11px] text-slate-600">
                               {result.excerpt}
                             </p>
                             <div className="mt-2 flex flex-wrap items-center gap-1">
@@ -441,7 +434,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                 </ScrollArea>
               </div>
             </div>
-          </SpotlightCard>
+          </div>
         </CollapsibleContent>
       </Collapsible>
     </div>

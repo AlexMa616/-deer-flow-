@@ -34,19 +34,19 @@ export function WorkspaceSidebar({
                 <WorkspaceHeader />
               </div>
             </SidebarHeader>
-            <SidebarContent className="gap-3 px-2 pb-3">
-              {isSidebarOpen && <SystemPulse className="mb-0" />}
-              <div className="rounded-2xl border border-sky-200/80 bg-white/78 p-1 shadow-[0_10px_22px_rgba(15,23,42,0.06)] backdrop-blur">
+            <SidebarContent className="gap-3 overflow-x-hidden overflow-y-auto px-2 pb-3 [&>*]:shrink-0">
+              {isSidebarOpen && <SystemPulse className="mb-0.5 shrink-0" />}
+              <div className="shrink-0 rounded-2xl border border-sky-200/80 bg-white/78 p-1 shadow-[0_10px_22px_rgba(15,23,42,0.06)] backdrop-blur">
                 <WorkspaceNavChatList />
               </div>
               {isSidebarOpen && (
-                <div className="rounded-2xl border border-sky-200/80 bg-white/78 p-1 shadow-[0_10px_22px_rgba(15,23,42,0.06)] backdrop-blur">
+                <div className="shrink-0 rounded-2xl border border-sky-200/80 bg-white/78 p-1 shadow-[0_10px_22px_rgba(15,23,42,0.06)] backdrop-blur">
                   <RecentChatList />
                 </div>
               )}
             </SidebarContent>
             <SidebarFooter className="px-2 pb-3">
-              <div className="rounded-2xl border border-sky-200/80 bg-white/78 p-1 shadow-[0_10px_22px_rgba(15,23,42,0.06)] backdrop-blur">
+              <div className="shrink-0 rounded-2xl border border-sky-200/80 bg-white/78 p-1 shadow-[0_10px_22px_rgba(15,23,42,0.06)] backdrop-blur">
                 <WorkspaceNavMenu />
               </div>
             </SidebarFooter>

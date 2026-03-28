@@ -15,7 +15,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { AlexMark } from "@/components/brand/alex-mark";
 import { FlickeringGrid } from "@/components/ui/flickering-grid";
-import { ShineBorder } from "@/components/ui/shine-border";
 import { HTTPError, requestJSON } from "@/core/api";
 import { setAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
@@ -287,7 +286,20 @@ const VISUAL_MODES: Record<VisualMode, VisualModeConfig> = {
 };
 
 const LOGIN_THEME_MODE_STORAGE_KEY = "deerflow.login.visual-mode.v2";
-const THEME_IMAGE_CACHE_PREFIX = "deerflow.login.theme-image.v4";
+const THEME_IMAGE_CACHE_PREFIX = "deerflow.login.theme-image.v5";
+
+const getStoredVisualMode = (): VisualMode | null => {
+  if (typeof window === "undefined") return null;
+  const saved = localStorage.getItem(LOGIN_THEME_MODE_STORAGE_KEY);
+  if (saved === "tech" || saved === "gemini" || saved === "ocean") {
+    return saved;
+  }
+  return null;
+};
+
+const getInitialVisualMode = (): VisualMode => {
+  return getStoredVisualMode() ?? getVisualModeForDate(getDayKey(new Date()));
+};
 
 const DOODLE_PALETTES: DoodlePalette[] = [
   { name: "霓虹蓝紫", colors: ["#5de0ff", "#7c3aed", "#22d3ee"] },
@@ -342,49 +354,61 @@ const DOODLE_VARIANTS: DoodleVariant[] = [
 
 const EVENT_IMAGES = {
   lanterns:
-    "https://images.unsplash.com/photo-1772374999051-3e405f1a62d8?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1515545109098-a85a15c67f45?auto=format&fit=crop&w=2400&q=82",
   lanternsAlt:
-    "https://images.unsplash.com/photo-1527937738552-7eb8023fa9a1?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=2400&q=82",
   shamrock:
-    "https://images.unsplash.com/photo-1641803216184-b36db7807d2b?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1526045478516-99145907023c?auto=format&fit=crop&w=2400&q=82",
   hearts:
-    "https://images.unsplash.com/photo-1760389276509-66dd0d9ec050?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=2400&q=82",
   fireworks:
-    "https://images.unsplash.com/photo-1509924618912-fb542eda1a12?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
   forest:
-    "https://images.unsplash.com/photo-1511238725159-777bd754e5d0?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2400&q=82",
   dragonBoat:
-    "https://images.unsplash.com/photo-1747013016473-71caecfacafa?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=2400&q=82",
   moon:
-    "https://images.unsplash.com/photo-1654257085164-b74352548cc4?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=82",
   halloween:
-    "https://cdn.pixabay.com/photo/2019/10/28/21/21/halloween-4585684_1280.jpg",
+    "https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=2400&q=82",
+  cityscape:
+    "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
+  underwater:
+    "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
 };
 
 const TECH_IMAGE_POOL: ImageEntry[] = [
   {
-    name: "Neon Circuit Grid",
-    url: "https://images.unsplash.com/photo-1744324509518-d61c11a4d509?auto=format&fit=crop&w=1600&q=80",
+    name: "Mac City Skyline Night",
+    url: "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
   },
   {
-    name: "Neon Wavefield",
-    url: "https://images.unsplash.com/photo-1762279388988-3f8abcc7dca2?auto=format&fit=crop&w=1600&q=80",
+    name: "Mac Urban Rooftop Light",
+    url: "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
   },
   {
-    name: "Blue Circuit Macro",
-    url: "https://images.unsplash.com/photo-1562408590-e32931084e23?auto=format&fit=crop&w=1600&q=80",
+    name: "Mac Forest Nature Vista",
+    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2400&q=82",
   },
   {
-    name: "Teal Board Detail",
-    url: "https://images.unsplash.com/photo-1555543451-eeaff357e0f3?auto=format&fit=crop&w=1600&q=80",
+    name: "Mac Coastline Clarity",
+    url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2400&q=82",
   },
   {
-    name: "Green Circuit Map",
-    url: "https://images.unsplash.com/photo-1553406830-4fd6df625354?auto=format&fit=crop&w=1600&q=80",
+    name: "Mac Underwater Blue Pulse",
+    url: "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
   },
   {
-    name: "Cyber Night City",
-    url: "https://images.unsplash.com/photo-1650761394796-8196608ab879?auto=format&fit=crop&w=1600&q=80",
+    name: "Mac Deep Sea Gradient",
+    url: "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2400&q=82",
+  },
+  {
+    name: "Mac Neon Tech Horizon",
+    url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2400&q=82",
+  },
+  {
+    name: "Mac Glass Arc Night View",
+    url: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=2400&q=82",
   },
 ];
 
@@ -910,13 +934,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [themeImage, setThemeImage] = useState<ThemeImageMeta | null>(null);
-  const [themeImageLoading, setThemeImageLoading] = useState(true);
-  const [showGrid, setShowGrid] = useState(false);
-  const [visualMode, setVisualMode] = useState<VisualMode>(() =>
-    getVisualModeForDate(getDayKey(new Date())),
-  );
+  const [themeImageLoading, setThemeImageLoading] = useState(false);
+  const [showGrid] = useState(true);
+  const [visualMode, setVisualMode] = useState<VisualMode>(getInitialVisualMode);
   const [imageRequestVersion, setImageRequestVersion] = useState(0);
   const forceRefreshImageRef = useRef(false);
+  const [viewportHeight, setViewportHeight] = useState(900);
   const [serviceStatus, setServiceStatus] = useState<"checking" | "ok" | "down">(
     "checking",
   );
@@ -958,39 +981,31 @@ export default function LoginPage() {
     : isLightMode
       ? "border-slate-200/90 bg-white/82"
       : "border-cyan-200/25 bg-slate-900/66";
-  const frameBackground = isGeminiMode
-    ? "linear-gradient(120deg, rgba(66,133,244,0.7), rgba(52,168,83,0.55), rgba(251,188,5,0.5), rgba(234,67,53,0.45), rgba(142,36,170,0.58))"
-    : "conic-gradient(from 140deg, rgba(255,255,255,0.35), var(--accent), rgba(255,255,255,0.35), var(--accent-strong), rgba(255,255,255,0.35))";
   const frameShadow = isGeminiMode
     ? "0 24px 74px rgba(37,99,235,0.14), 0 8px 30px rgba(15,23,42,0.09)"
     : `0 26px 80px rgba(15,23,42,0.16), 0 0 50px ${theme.accentSoft}`;
   const cardInsetShadow = isGeminiMode
     ? `inset 0 0 0 1px rgba(255,255,255,0.72), inset 0 18px 60px rgba(219,234,254,0.48)`
     : `inset 0 0 0 1px ${theme.accentSoft}, inset 0 24px 90px rgba(11,18,36,0.42)`;
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setShowGrid(true), 440);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = localStorage.getItem(LOGIN_THEME_MODE_STORAGE_KEY);
-    if (
-      saved === "tech"
-      || saved === "gemini"
-      || saved === "ocean"
-    ) {
-      setVisualMode(saved);
-      return;
-    }
-    setVisualMode(getVisualModeForDate(dayKey));
-  }, [dayKey]);
+  const layoutScale = useMemo(() => {
+    const baseHeight = 920;
+    const scaled = (viewportHeight - 18) / baseHeight;
+    return Math.max(0.8, Math.min(1, scaled));
+  }, [viewportHeight]);
+  const shouldScaleLayout = layoutScale < 0.995;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     localStorage.setItem(LOGIN_THEME_MODE_STORAGE_KEY, visualMode);
   }, [visualMode]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const updateViewportHeight = () => setViewportHeight(window.innerHeight);
+    updateViewportHeight();
+    window.addEventListener("resize", updateViewportHeight);
+    return () => window.removeEventListener("resize", updateViewportHeight);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -1032,6 +1047,15 @@ export default function LoginPage() {
       } catch {
         localStorage.removeItem(imageCacheKey);
       }
+
+      // 默认不自动拉取在线图片，避免页面首屏慢和“自动刷新感”。
+      // 仅在用户主动点击“换图”时发起在线检索。
+      setThemeImage(null);
+      setThemeImageLoading(false);
+      return () => {
+        alive = false;
+        controller.abort();
+      };
     }
 
     const query = new URLSearchParams({
@@ -1135,15 +1159,32 @@ export default function LoginPage() {
   return (
     <div
       className={cn(
-        "relative min-h-screen flex items-center justify-center overflow-hidden p-4",
+        "relative h-screen overflow-hidden px-3 py-3 sm:px-5 sm:py-4",
         modeConfig.containerClass,
       )}
       style={{ backgroundImage: theme.background }}
     >
+      <div className="pointer-events-none absolute inset-0">
+        <img
+          src={dailyImageUrl}
+          alt="login-theme-backdrop"
+          className="h-full w-full scale-[1.03] object-cover"
+          loading="eager"
+          decoding="async"
+        />
+        <div
+          className={cn(
+            "absolute inset-0",
+            isLightMode
+              ? "bg-[linear-gradient(180deg,rgba(246,246,243,0.76),rgba(246,246,243,0.9)_42%,rgba(246,246,243,0.95))]"
+              : "bg-[linear-gradient(180deg,rgba(2,6,23,0.65),rgba(2,6,23,0.84))]",
+          )}
+        />
+      </div>
       <div className="absolute inset-0" style={{ backgroundImage: modeConfig.heroTint }} />
       {showGrid && (
         <FlickeringGrid
-          className="absolute inset-0 opacity-[0.12]"
+          className="absolute inset-0 opacity-[0.08]"
           color={theme.grid}
           squareSize={3}
           gridGap={13}
@@ -1151,18 +1192,55 @@ export default function LoginPage() {
         />
       )}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f022_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f022_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_76%_62%_at_50%_0%,#000_66%,transparent_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,23,42,0.05)_1px,transparent_1px)] bg-[size:100%_12px] opacity-[0.18]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:100%_12px] opacity-[0.14]" />
 
       <div
-        className="relative w-full max-w-3xl"
+        className="relative z-20 mx-auto w-full max-w-6xl"
         style={
-          {
-            "--accent": theme.accent,
-            "--accent-strong": theme.accentStrong,
-            "--accent-soft": theme.accentSoft,
-          } as React.CSSProperties
+          shouldScaleLayout
+            ? { transform: `scale(${layoutScale})`, transformOrigin: "top center" }
+            : undefined
         }
       >
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between">
+          <div className="inline-flex items-center gap-2.5">
+            <AlexMark compact className="h-8 w-8 rounded-lg" accent={theme.accent} />
+            <span className="text-[1.6rem] leading-none font-semibold tracking-tight text-slate-900">
+              Alex
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={handleCycleVisualMode}
+            className="inline-flex items-center gap-2 rounded-full border border-slate-300/70 bg-white/86 px-3 py-1.5 text-xs text-slate-700 shadow-sm backdrop-blur transition hover:bg-white"
+          >
+            <Palette className="h-3.5 w-3.5" />
+            {modeConfig.label}
+          </button>
+        </div>
+
+        <div className="mx-auto mt-4 w-full max-w-4xl text-center">
+          <h1 className="text-pretty text-3xl leading-tight font-semibold tracking-tight text-slate-900 md:text-5xl">
+            智能中枢登录
+          </h1>
+          <p className="mt-2 text-base text-slate-700 md:text-xl">
+            基于deer-flow的数据流处理平台
+          </p>
+          <p className="mt-1 text-xs text-slate-500">
+            继续进入你的专属智能空间
+          </p>
+        </div>
+
+        <div
+          className="mx-auto mt-4 w-full max-w-4xl"
+          style={
+            {
+              "--accent": theme.accent,
+              "--accent-strong": theme.accentStrong,
+              "--accent-soft": theme.accentSoft,
+            } as React.CSSProperties
+          }
+        >
         <div
           className="absolute -top-28 -left-24 h-64 w-64 rounded-full blur-3xl"
           style={{ background: theme.orbA }}
@@ -1173,22 +1251,21 @@ export default function LoginPage() {
         />
 
         <div
-          className="relative rounded-[36px] p-[1.5px]"
+          className="relative rounded-[38px] border border-white/70 bg-white/82 p-1 shadow-[0_24px_70px_rgba(15,23,42,0.16)] backdrop-blur-xl"
           style={{
-            background: frameBackground,
             boxShadow: frameShadow,
           }}
         >
           <div
             className={cn(
-              "relative overflow-hidden rounded-[34px] p-10 backdrop-blur-2xl",
+              "relative overflow-hidden rounded-[34px] p-6 backdrop-blur-2xl md:p-7",
               modeConfig.cardClass,
             )}
             style={{
               boxShadow: cardInsetShadow,
             }}
           >
-          <div className="pointer-events-none absolute inset-0 opacity-[0.25]">
+          <div className="pointer-events-none absolute inset-0 opacity-[0.16]">
             <img
               src={dailyImageUrl}
               alt="theme-backdrop"
@@ -1200,73 +1277,27 @@ export default function LoginPage() {
               className={cn(
                 "absolute inset-0",
                 isLightMode
-                  ? "bg-[linear-gradient(180deg,rgba(248,250,252,0.2),rgba(241,245,249,0.78)_45%,rgba(241,245,249,0.9))]"
+                  ? "bg-[linear-gradient(180deg,rgba(248,250,252,0.35),rgba(241,245,249,0.86)_45%,rgba(241,245,249,0.93))]"
                   : "bg-[linear-gradient(180deg,rgba(3,9,23,0.35),rgba(6,20,43,0.86)_42%,rgba(6,20,43,0.95))]",
               )}
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(34,211,238,0.28),transparent_48%),radial-gradient(circle_at_85%_10%,rgba(99,102,241,0.24),transparent_46%)]" />
           </div>
-          <div className="pointer-events-none absolute inset-0 opacity-[0.18] bg-[linear-gradient(to_right,rgba(148,163,184,0.22)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.22)_1px,transparent_1px)] bg-[size:38px_38px]" />
-          <ShineBorder
-            borderWidth={1}
-            duration={12}
-            shineColor={theme.shine}
-          />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.1] bg-[linear-gradient(to_right,rgba(148,163,184,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.2)_1px,transparent_1px)] bg-[size:44px_44px]" />
           <div
-            className="absolute inset-x-0 top-0 h-28"
+            className="absolute inset-x-0 top-0 h-20"
             style={{ backgroundImage: theme.hero }}
           />
-          <div className="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_20%_30%,rgba(255,255,255,0.18),transparent_70%)]" />
-
-          <div className="absolute right-6 top-4 hidden sm:block">
-            <button
-              type="button"
-              onClick={handleRefreshThemeImage}
-              className={cn(
-                "group relative block h-24 w-52 overflow-hidden rounded-2xl border shadow-[0_14px_36px_rgba(15,23,42,0.28)] transition hover:scale-[1.01]",
-                isLightMode
-                  ? "border-slate-200 bg-white/80"
-                  : "border-cyan-200/30 bg-slate-900/70",
-              )}
-              title="点击刷新今日主题高清图"
-            >
-              <img
-                src={dailyImageUrl}
-                alt={`${doodleBadgePrefix}-${doodle.name}`}
-                className="h-full w-full object-cover"
-                loading="eager"
-                decoding="async"
-              />
-              {themeImageLoading && (
-                <div
-                  className={cn(
-                    "absolute inset-0 grid place-items-center text-[10px]",
-                    isLightMode
-                      ? "bg-white/50 text-slate-700"
-                      : "bg-slate-900/35 text-slate-200",
-                  )}
-                >
-                  在线拉取主题中...
-                </div>
-              )}
-              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.42),transparent_40%,rgba(0,0,0,0.2))] mix-blend-screen" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,255,255,0.35),transparent_55%)] mix-blend-screen" />
-              <div className="absolute inset-0 ring-1 ring-white/60" />
-              <div className="absolute right-2 bottom-2 inline-flex items-center gap-1 rounded-full bg-black/45 px-2 py-0.5 text-[10px] text-white">
-                <RefreshCw className="h-3 w-3 transition group-hover:rotate-90" />
-                换图
-              </div>
-            </button>
-          </div>
+          <div className="absolute inset-x-0 top-0 h-20 bg-[radial-gradient(circle_at_20%_30%,rgba(255,255,255,0.18),transparent_70%)]" />
 
           <div className="relative">
-            <div className="flex flex-wrap items-start justify-between gap-6">
-              <div className="flex items-center gap-4">
+            <div className="flex flex-col items-center gap-3 text-center">
+              <div className="flex items-center gap-3">
                 <div className="relative">
                   <AlexMark
                     accent={theme.accent}
                     className={cn(
-                      "h-14 w-14",
+                      "h-12 w-12",
                       isLightMode && "border-slate-200 bg-white/88",
                     )}
                   />
@@ -1286,7 +1317,7 @@ export default function LoginPage() {
                   <p className={cn("text-[10px] uppercase tracking-[0.3em]", mutedTextClass)}>
                     Alex Core
                   </p>
-                  <p className={cn("text-2xl font-semibold", badgeStrongTextClass)}>
+                  <p className={cn("text-[1.35rem] leading-tight font-semibold", badgeStrongTextClass)}>
                     基于deer-flow的数据流处理平台
                   </p>
                   <p className={cn("mt-1 text-xs", surfaceTextClass)}>
@@ -1309,8 +1340,8 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-              <div className="flex flex-wrap items-center gap-3">
+            <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_1fr]">
+              <div className="flex flex-wrap items-center justify-center gap-3">
                 <span className={cn("inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px]", badgeClass)}>
                   <BadgeCheck className="h-3 w-3" />
                   网关状态：
@@ -1334,7 +1365,7 @@ export default function LoginPage() {
                 </button>
               </div>
 
-              <div className={cn("relative overflow-hidden rounded-2xl border px-4 py-3 shadow-[0_14px_36px_rgba(15,23,42,0.22)]", panelSurfaceClass)}>
+              <div className={cn("relative overflow-hidden rounded-2xl border px-3.5 py-2.5 shadow-[0_14px_30px_rgba(15,23,42,0.14)]", panelSurfaceClass)}>
                 <div
                   className="absolute -right-6 -top-8 h-24 w-24 rounded-full blur-2xl"
                   style={{ background: theme.accentSoft }}
@@ -1355,8 +1386,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={handleRefreshThemeImage}
-                  className="relative mt-3 block h-36 w-full overflow-hidden rounded-xl border border-white/45 bg-black/10 text-left transition hover:scale-[1.005]"
-                  title="点击刷新主题图片"
+                  className="relative mt-2 block h-28 w-full overflow-hidden rounded-xl border border-slate-200/70 bg-white/70 text-left transition hover:scale-[1.005] md:h-32"
+                  title="点击刷新主题图片（在线更新）"
                 >
                   <img
                     src={dailyImageUrl}
@@ -1374,29 +1405,32 @@ export default function LoginPage() {
                           : "bg-slate-900/40 text-slate-200",
                       )}
                     >
-                      拉取高清主题图...
+                      正在在线更新高清图...
                     </div>
                   )}
                   <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.5),transparent_45%,rgba(0,0,0,0.25))] mix-blend-screen" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(0,194,255,0.35),transparent_55%)] mix-blend-screen" />
                   <div className="absolute inset-0 ring-1 ring-white/60" />
-                  <div className="absolute right-3 bottom-2 inline-flex items-center gap-1 rounded-full bg-black/45 px-2 py-0.5 text-[10px] text-white">
+                  <div className="absolute right-3 bottom-2 inline-flex items-center gap-1 rounded-full bg-black/55 px-2 py-0.5 text-[10px] text-white">
                     <RefreshCw className="h-3 w-3" />
-                    点击换图
+                    在线换图
                   </div>
                 </button>
                 <div className={cn("mt-2 flex items-center justify-between text-[10px]", mutedTextClass)}>
                   <span>
-                    素材源：{themeImage?.provider ?? "在线主题库"}
+                    素材源：{themeImage?.provider ?? "本地高清图池"}
                   </span>
-                  <span>{themeImage?.from === "fallback" ? "回退图池" : "实时检索"}</span>
+                  <span>{themeImage?.from === "fallback" ? "本地秒开" : "在线检索"}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <form onSubmit={handleLogin} className="mt-10 space-y-6">
-            <div className="space-y-4">
+          <form
+            onSubmit={handleLogin}
+            className="mt-5 space-y-4 rounded-[26px] border border-slate-200/80 bg-white/82 p-4 shadow-[0_14px_34px_rgba(15,23,42,0.07)] backdrop-blur"
+          >
+            <div className="space-y-3">
               <div className="space-y-1.5">
                 <label className={cn("ml-1 text-[11px] font-semibold", surfaceTextClass)}>
                   管理员账号
@@ -1408,7 +1442,7 @@ export default function LoginPage() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className={cn(
-                      "w-full rounded-2xl border py-3.5 pl-10 pr-4 text-sm outline-none transition-all focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent-soft)]",
+                      "w-full rounded-2xl border py-3 pl-10 pr-4 text-sm outline-none transition-all focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent-soft)]",
                       modeConfig.fieldClass,
                     )}
                     placeholder="请输入你的管理工号"
@@ -1428,7 +1462,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className={cn(
-                      "w-full rounded-2xl border py-3.5 pl-10 pr-4 text-sm outline-none transition-all focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent-soft)]",
+                      "w-full rounded-2xl border py-3 pl-10 pr-4 text-sm outline-none transition-all focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent-soft)]",
                       modeConfig.fieldClass,
                     )}
                     placeholder="请输入安全访问密钥"
@@ -1446,7 +1480,7 @@ export default function LoginPage() {
 
             <button
               disabled={loading || !username.trim() || !password.trim()}
-              className="relative w-full overflow-hidden rounded-full bg-[linear-gradient(120deg,var(--accent),var(--accent-strong))] py-3.5 text-sm font-semibold text-white transition-all hover:brightness-105 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+              className="relative w-full overflow-hidden rounded-full bg-[linear-gradient(120deg,var(--accent),var(--accent-strong))] py-3 text-sm font-semibold text-white transition-all hover:brightness-105 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
               style={{ boxShadow: `0 12px 30px ${theme.accentSoft}` }}
             >
               <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:200%_200%] animate-shimmer" />
@@ -1461,7 +1495,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="pt-6 mt-6 border-t border-white/15 text-center">
+          <div className="mt-4 border-t border-slate-200/70 pt-4 text-center">
             <p className={cn("text-[11px]", mutedTextClass)}>
               沈阳大学 · 智能科学与信息工程学院
             </p>
@@ -1473,6 +1507,7 @@ export default function LoginPage() {
             </p>
           </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -14,6 +14,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
 import {
   Item,
   ItemActions,
@@ -21,30 +22,60 @@ import {
   ItemContent,
   ItemDescription,
 } from "@/components/ui/item";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useI18n } from "@/core/i18n/hooks";
+import { enUS } from "@/core/i18n/locales/en-US";
+import { zhCN } from "@/core/i18n/locales/zh-CN";
 import { useEnableSkill, useSkills } from "@/core/skills/hooks";
 import type { Skill } from "@/core/skills/type";
 import { env } from "@/env";
 
+import {
+  BilingualViewToggle,
+  formatBilingualText,
+  type BilingualViewMode,
+  useBilingualViewMode,
+} from "./bilingual-view";
 import { SettingsSection } from "./settings-section";
 
 export function SkillSettingsPage({ onClose }: { onClose?: () => void } = {}) {
-  const { t } = useI18n();
+  const { locale } = useI18n();
   const { skills, isLoading, error } = useSkills();
+  const [viewMode, setViewMode] = useBilingualViewMode(
+    locale === "zh-CN" ? "zh" : "en",
+  );
+
   return (
     <SettingsSection
-      title={t.settings.skills.title}
-      description={t.settings.skills.description}
+      title={
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span>
+            {formatBilingualText(
+              viewMode,
+              zhCN.settings.skills.title,
+              enUS.settings.skills.title,
+            )}
+          </span>
+          <BilingualViewToggle mode={viewMode} onChange={setViewMode} />
+        </div>
+      }
+      description={formatBilingualText(
+        viewMode,
+        zhCN.settings.skills.description,
+        enUS.settings.skills.description,
+      )}
     >
       {isLoading ? (
-        <div className="text-muted-foreground text-sm">{t.common.loading}</div>
+        <div className="text-muted-foreground text-sm">
+          {formatBilingualText(viewMode, zhCN.common.loading, enUS.common.loading)}
+        </div>
       ) : error ? (
-        <div>Error: {error.message}</div>
+        <div>
+          {formatBilingualText(viewMode, "加载失败", "Load failed")}: {error.message}
+        </div>
       ) : (
-        <SkillSettingsList skills={skills} onClose={onClose} />
+        <SkillSettingsList skills={skills} onClose={onClose} viewMode={viewMode} />
       )}
     </SettingsSection>
   );
@@ -53,11 +84,12 @@ export function SkillSettingsPage({ onClose }: { onClose?: () => void } = {}) {
 function SkillSettingsList({
   skills,
   onClose,
+  viewMode,
 }: {
   skills: Skill[];
   onClose?: () => void;
+  viewMode: BilingualViewMode;
 }) {
-  const { t } = useI18n();
   const router = useRouter();
   const [filter, setFilter] = useState<string>("public");
   const [query, setQuery] = useState("");
@@ -89,8 +121,12 @@ function SkillSettingsList({
         <div className="flex flex-col gap-2">
           <Tabs defaultValue="public" onValueChange={setFilter}>
             <TabsList variant="line">
-              <TabsTrigger value="public">{t.common.public}</TabsTrigger>
-              <TabsTrigger value="custom">{t.common.custom}</TabsTrigger>
+              <TabsTrigger value="public">
+                {formatBilingualText(viewMode, zhCN.common.public, enUS.common.public)}
+              </TabsTrigger>
+              <TabsTrigger value="custom">
+                {formatBilingualText(viewMode, zhCN.common.custom, enUS.common.custom)}
+              </TabsTrigger>
             </TabsList>
           </Tabs>
           <div className="flex flex-wrap items-center gap-2">
@@ -98,25 +134,33 @@ function SkillSettingsList({
               <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
               <Input
                 className="h-9 rounded-full pl-9"
-                placeholder={`${t.common.search}${t.settings.skills.title}...`}
+                placeholder={`${formatBilingualText(viewMode, zhCN.common.search, enUS.common.search)}${formatBilingualText(viewMode, zhCN.settings.skills.title, enUS.settings.skills.title)}...`}
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
               />
             </div>
             <Badge variant="secondary" className="rounded-full text-xs">
-              已启用 {enabledCount}/{filteredSkills.length}
+              {viewMode === "en"
+                ? `Enabled ${enabledCount}/${filteredSkills.length}`
+                : viewMode === "zh"
+                  ? `已启用 ${enabledCount}/${filteredSkills.length}`
+                  : `已启用/Enabled ${enabledCount}/${filteredSkills.length}`}
             </Badge>
           </div>
         </div>
         <div>
           <Button size="sm" onClick={handleCreateSkill}>
             <SparklesIcon className="size-4" />
-            {t.settings.skills.createSkill}
+            {formatBilingualText(
+              viewMode,
+              zhCN.settings.skills.createSkill,
+              enUS.settings.skills.createSkill,
+            )}
           </Button>
         </div>
       </header>
       {filteredSkills.length === 0 && (
-        <EmptySkill onCreateSkill={handleCreateSkill} />
+        <EmptySkill onCreateSkill={handleCreateSkill} viewMode={viewMode} />
       )}
       {filteredSkills.length > 0 &&
         filteredSkills.map((skill) => (
@@ -155,21 +199,42 @@ function SkillSettingsList({
   );
 }
 
-function EmptySkill({ onCreateSkill }: { onCreateSkill: () => void }) {
-  const { t } = useI18n();
+function EmptySkill({
+  onCreateSkill,
+  viewMode,
+}: {
+  onCreateSkill: () => void;
+  viewMode: BilingualViewMode;
+}) {
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <SparklesIcon />
         </EmptyMedia>
-        <EmptyTitle>{t.settings.skills.emptyTitle}</EmptyTitle>
+        <EmptyTitle>
+          {formatBilingualText(
+            viewMode,
+            zhCN.settings.skills.emptyTitle,
+            enUS.settings.skills.emptyTitle,
+          )}
+        </EmptyTitle>
         <EmptyDescription>
-          {t.settings.skills.emptyDescription}
+          {formatBilingualText(
+            viewMode,
+            zhCN.settings.skills.emptyDescription,
+            enUS.settings.skills.emptyDescription,
+          )}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button onClick={onCreateSkill}>{t.settings.skills.emptyButton}</Button>
+        <Button onClick={onCreateSkill}>
+          {formatBilingualText(
+            viewMode,
+            zhCN.settings.skills.emptyButton,
+            enUS.settings.skills.emptyButton,
+          )}
+        </Button>
       </EmptyContent>
     </Empty>
   );

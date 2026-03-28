@@ -206,31 +206,31 @@ const EVENT_QUERY_POOL: Record<string, string[]> = {
 };
 
 const DAILY_QUERY_POOL = [
-  "ai futuristic interface illustration",
-  "cyber light technology artwork",
-  "digital neon hologram illustration",
-  "high tech dashboard concept art",
-  "modern gradient doodle illustration",
-  "creative festival poster illustration",
-  "cute mascot cartoon illustration",
-  "minimal flat illustration high resolution",
+  "macos style cityscape wallpaper 4k",
+  "apple style city skyline wallpaper",
+  "mac wallpaper nature landscape 5k",
+  "mac wallpaper underwater scene blue",
+  "futuristic technology wallpaper high resolution",
+  "digital neon interface artwork",
+  "clean minimal gradient wallpaper",
+  "ocean coastline aerial wallpaper 4k",
 ];
 
 const MODE_QUERY_POOL: Record<VisualMode, string[]> = {
   tech: [
-    "futuristic ui dashboard illustration",
-    "cyberpunk neon technology wallpaper",
-    "holographic abstract blue interface art",
+    "futuristic ui dashboard wallpaper",
+    "cyberpunk neon technology wallpaper 4k",
+    "mac style tech gradient wallpaper",
   ],
   gemini: [
-    "clean minimal abstract gradient illustration",
-    "google style modern abstract wallpaper",
-    "premium simple geometric pastel illustration",
+    "macos cityscape wallpaper clean style",
+    "apple style modern city night wallpaper",
+    "minimal premium geometric wallpaper high resolution",
   ],
   ocean: [
-    "blue ocean beach aerial high resolution",
-    "sea wave tropical coast wallpaper",
-    "clear sky ocean horizon photography",
+    "mac wallpaper underwater ocean scene",
+    "blue ocean beach aerial wallpaper 4k",
+    "sea wave tropical coast wallpaper high resolution",
   ],
 };
 
@@ -238,61 +238,63 @@ const FALLBACK_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "fro
   tech: [
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1280&q=78",
-      title: "Neon Tech Art",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2400&q=82",
+      title: "Mac Tech Glow",
       provider: "Unsplash",
       license: "Unsplash",
-      attribution: "Pawel Czerwinski",
-      sourceUrl: "https://unsplash.com/photos/0VR3j2capSc",
+      attribution: "Luke Chesser",
+      sourceUrl: "https://unsplash.com/photos/JKUTrJ4vK00",
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1650761394796-8196608ab879?auto=format&fit=crop&w=1280&q=78",
-      title: "Cyber Night City",
+        "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
+      title: "Mac Night City",
       provider: "Unsplash",
       license: "Unsplash",
-      attribution: "Maximalfocus",
-      sourceUrl: "https://unsplash.com/photos/U8-RkfkM6iI",
+      attribution: "Andres Siimon",
+      sourceUrl: "https://unsplash.com/photos/a-city-skyline-at-night-3Qzf-U0XfCE",
     },
   ],
   gemini: [
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1280&q=78",
-      title: "Gradient Minimal",
+        "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
+      title: "Mac Urban Rooftop",
       provider: "Unsplash",
       license: "Unsplash",
-      attribution: "Pawel Czerwinski",
-      sourceUrl: "https://unsplash.com/photos/gA_ukO5A3dE",
+      attribution: "Mantas Hesthaven",
+      sourceUrl:
+        "https://unsplash.com/photos/rooftops-of-houses-with-city-skyline-in-background-S21CrCFzsSc",
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1280&q=78",
-      title: "Clean Celebration",
+        "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=2400&q=82",
+      title: "City Reflection",
       provider: "Unsplash",
       license: "Unsplash",
-      attribution: "Designecologist",
-      sourceUrl: "https://unsplash.com/photos/Pmh0UoG1vlE",
+      attribution: "Denys Nevozhai",
+      sourceUrl: "https://unsplash.com/photos/guNIjIuUcgY",
     },
   ],
   ocean: [
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1280&q=78",
-      title: "Fresh Ocean Theme",
+        "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
+      title: "Underwater Blue World",
       provider: "Unsplash",
       license: "Unsplash",
-      attribution: "Jeremy Bishop",
-      sourceUrl: "https://unsplash.com/photos/G9i_plbfDgk",
+      attribution: "Natalia Blauth",
+      sourceUrl:
+        "https://unsplash.com/photos/a-vibrant-blue-fish-swims-gracefully-underwater-ggw69SgTlNM",
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1280&q=78",
-      title: "Nature Festival Mood",
+        "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2400&q=82",
+      title: "Deep Sea Fish",
       provider: "Unsplash",
       license: "Unsplash",
-      attribution: "Alejandro Escamilla",
-      sourceUrl: "https://unsplash.com/photos/yC-Yzbqy7PY",
+      attribution: "Francesco Ungaro",
+      sourceUrl: "https://unsplash.com/photos/fishes-underwater-IjzFb5zEz68",
     },
   ],
 };
@@ -300,26 +302,27 @@ const FALLBACK_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "fro
 const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1280&q=78",
-    title: "Neon Tech Art",
+      "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
+    title: "Mac Night City",
     provider: "Unsplash",
     license: "Unsplash",
-    attribution: "Pawel Czerwinski",
-    sourceUrl: "https://unsplash.com/photos/0VR3j2capSc",
+    attribution: "Andres Siimon",
+    sourceUrl: "https://unsplash.com/photos/a-city-skyline-at-night-3Qzf-U0XfCE",
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1280&q=78",
-    title: "Fresh Ocean Theme",
+      "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
+    title: "Mac Urban Rooftop",
     provider: "Unsplash",
     license: "Unsplash",
-    attribution: "Jeremy Bishop",
-    sourceUrl: "https://unsplash.com/photos/G9i_plbfDgk",
+    attribution: "Mantas Hesthaven",
+    sourceUrl:
+      "https://unsplash.com/photos/rooftops-of-houses-with-city-skyline-in-background-S21CrCFzsSc",
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1280&q=78",
-    title: "Nature Festival Mood",
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2400&q=82",
+    title: "Mac Nature Landscape",
     provider: "Unsplash",
     license: "Unsplash",
     attribution: "Alejandro Escamilla",
@@ -327,12 +330,22 @@ const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1280&q=78",
-    title: "Celebration Fireworks",
+      "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
+    title: "Mac Underwater Blue",
     provider: "Unsplash",
     license: "Unsplash",
-    attribution: "Designecologist",
-    sourceUrl: "https://unsplash.com/photos/Pmh0UoG1vlE",
+    attribution: "Natalia Blauth",
+    sourceUrl:
+      "https://unsplash.com/photos/a-vibrant-blue-fish-swims-gracefully-underwater-ggw69SgTlNM",
+  },
+  {
+    imageUrl:
+      "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2400&q=82",
+    title: "Mac Deep Sea Fish",
+    provider: "Unsplash",
+    license: "Unsplash",
+    attribution: "Francesco Ungaro",
+    sourceUrl: "https://unsplash.com/photos/fishes-underwater-IjzFb5zEz68",
   },
 ];
 

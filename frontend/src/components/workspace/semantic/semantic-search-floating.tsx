@@ -15,9 +15,10 @@ import { SemanticSearchPanel } from "./semantic-search-panel";
 
 type Position = { x: number; y: number };
 
-const STORAGE_KEY = "deerflow.semantic-search.position.v1";
+const STORAGE_KEY = "deerflow.semantic-search.position.v2";
 const DEFAULT_MARGIN = 16;
-const DEFAULT_TOP = 120;
+const DEFAULT_LEFT = 24;
+const DEFAULT_TOP = 82;
 const FALLBACK_WIDTH = 420;
 const FALLBACK_HEIGHT = 120;
 
@@ -71,12 +72,11 @@ export function SemanticSearchFloating({
         localStorage.removeItem(STORAGE_KEY);
       }
     }
-    const width = panelRef.current?.offsetWidth ?? FALLBACK_WIDTH;
     const height = panelRef.current?.offsetHeight ?? FALLBACK_HEIGHT;
     const initial = {
-      x: window.innerWidth - width - DEFAULT_MARGIN,
+      x: DEFAULT_LEFT,
       y: Math.min(
-        Math.max(DEFAULT_TOP, window.innerHeight - height - 240),
+        Math.max(DEFAULT_TOP, window.innerHeight - height - 260),
         window.innerHeight - height - DEFAULT_MARGIN,
       ),
     };
@@ -127,12 +127,11 @@ export function SemanticSearchFloating({
 
   const handleResetPosition = useCallback(() => {
     if (typeof window === "undefined") return;
-    const width = panelRef.current?.offsetWidth ?? FALLBACK_WIDTH;
     const height = panelRef.current?.offsetHeight ?? FALLBACK_HEIGHT;
     setClampedPosition({
-      x: window.innerWidth - width - DEFAULT_MARGIN,
+      x: DEFAULT_LEFT,
       y: Math.min(
-        Math.max(DEFAULT_TOP, window.innerHeight - height - 240),
+        Math.max(DEFAULT_TOP, window.innerHeight - height - 260),
         window.innerHeight - height - DEFAULT_MARGIN,
       ),
     });

@@ -8,13 +8,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { ConversationEmptyState } from "@/components/ai-elements/conversation";
 import { usePromptInputController } from "@/components/ai-elements/prompt-input";
+import { AlexMark } from "@/components/brand/alex-mark";
 import { Button } from "@/components/ui/button";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { ShineBorder } from "@/components/ui/shine-border";
 import { useSidebar } from "@/components/ui/sidebar";
 import {
   ArtifactFileDetail,
@@ -237,28 +237,47 @@ export default function ChatPage() {
                   : "border-b border-slate-200/70 bg-white/70 shadow-[0_8px_24px_rgba(15,23,42,0.04)] backdrop-blur",
               )}
             >
-              <div className="flex w-full items-center text-sm font-medium">
-                {title !== "Untitled" && (
-                  <ThreadTitle threadId={threadId} threadTitle={title} />
-                )}
-              </div>
-              <div>
-                {artifacts?.length > 0 && !artifactsOpen && (
-                  <Tooltip content="Show artifacts of this conversation">
-                    <Button
-                      className="text-muted-foreground hover:text-foreground"
-                      variant="ghost"
-                      onClick={() => {
-                        setArtifactsOpen(true);
-                        setSidebarOpen(false);
-                      }}
-                    >
-                      <FilesIcon />
-                      {t.common.artifacts}
-                    </Button>
-                  </Tooltip>
-                )}
-              </div>
+              {isNewThread ? (
+                <div className="flex w-full items-center justify-between">
+                  <div className="inline-flex items-center gap-2.5">
+                    <AlexMark compact className="h-8 w-8 rounded-lg" />
+                    <span className="text-2xl font-medium tracking-tight text-slate-800">
+                      Alex
+                    </span>
+                  </div>
+                  <div className="inline-flex items-center gap-2">
+                    <span className="rounded-full border border-slate-200/80 bg-white/80 px-3 py-1 text-xs font-semibold tracking-[0.12em] text-slate-700">
+                      PRO
+                    </span>
+                    <AlexMark compact className="h-8 w-8 rounded-full" />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex w-full items-center text-sm font-medium">
+                    {title !== "Untitled" && (
+                      <ThreadTitle threadId={threadId} threadTitle={title} />
+                    )}
+                  </div>
+                  <div>
+                    {artifacts?.length > 0 && !artifactsOpen && (
+                      <Tooltip content="Show artifacts of this conversation">
+                        <Button
+                          className="text-muted-foreground hover:text-foreground"
+                          variant="ghost"
+                          onClick={() => {
+                            setArtifactsOpen(true);
+                            setSidebarOpen(false);
+                          }}
+                        >
+                          <FilesIcon />
+                          {t.common.artifacts}
+                        </Button>
+                      </Tooltip>
+                    )}
+                  </div>
+                </>
+              )}
             </header>
             <main className="flex min-h-0 max-w-full grow flex-col">
               <div className="flex size-full justify-center">
@@ -302,11 +321,6 @@ export default function ChatPage() {
                     </div>
                   </div>
                   <div className="relative">
-                    <ShineBorder
-                      borderWidth={1}
-                      duration={14}
-                      shineColor={["#38bdf8", "#818cf8", "#22d3ee"]}
-                    />
                     <InputBox
                       className={cn(
                         "w-full -translate-y-4 border border-slate-200/85 bg-white/92 text-slate-900 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl",
