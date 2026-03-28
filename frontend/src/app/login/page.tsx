@@ -249,7 +249,7 @@ const THEMES: Record<ThemeKey, ThemeConfig> = {
 const VISUAL_MODES: Record<VisualMode, VisualModeConfig> = {
   tech: {
     label: "智能",
-    subtitle: "Smart Neon",
+    subtitle: "科技炫彩",
     heroTint:
       "radial-gradient(circle at 14% 10%, rgba(34,211,238,0.24), transparent 42%), radial-gradient(circle at 82% 12%, rgba(99,102,241,0.2), transparent 45%)",
     containerClass:
@@ -261,7 +261,7 @@ const VISUAL_MODES: Record<VisualMode, VisualModeConfig> = {
   },
   gemini: {
     label: "简约",
-    subtitle: "Gemini Premium",
+    subtitle: "轻奢极简",
     heroTint:
       "radial-gradient(circle at 12% 10%, rgba(66,133,244,0.19), transparent 44%), radial-gradient(circle at 82% 12%, rgba(168,85,247,0.14), transparent 46%), radial-gradient(circle at 52% 0%, rgba(34,211,238,0.1), transparent 38%)",
     containerClass:
@@ -273,7 +273,7 @@ const VISUAL_MODES: Record<VisualMode, VisualModeConfig> = {
   },
   ocean: {
     label: "清新",
-    subtitle: "Ocean Breeze",
+    subtitle: "蓝海清新",
     heroTint:
       "radial-gradient(circle at 16% 8%, rgba(34,211,238,0.2), transparent 44%), radial-gradient(circle at 82% 10%, rgba(56,189,248,0.18), transparent 44%)",
     containerClass:
@@ -286,7 +286,7 @@ const VISUAL_MODES: Record<VisualMode, VisualModeConfig> = {
 };
 
 const LOGIN_THEME_MODE_STORAGE_KEY = "deerflow.login.visual-mode.v2";
-const THEME_IMAGE_CACHE_PREFIX = "deerflow.login.theme-image.v5";
+const THEME_IMAGE_CACHE_PREFIX = "deerflow.login.theme-image.v6";
 
 const getStoredVisualMode = (): VisualMode | null => {
   if (typeof window === "undefined") return null;
@@ -354,9 +354,9 @@ const DOODLE_VARIANTS: DoodleVariant[] = [
 
 const EVENT_IMAGES = {
   lanterns:
-    "https://images.unsplash.com/photo-1515545109098-a85a15c67f45?auto=format&fit=crop&w=2400&q=82",
+    "https://512pixels.net/downloads/macos-wallpapers/14-Sonoma-Light.jpg",
   lanternsAlt:
-    "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=2400&q=82",
+    "https://512pixels.net/downloads/macos-wallpapers/15-Sequoia-Light-6K.jpg",
   shamrock:
     "https://images.unsplash.com/photo-1526045478516-99145907023c?auto=format&fit=crop&w=2400&q=82",
   hearts:
@@ -370,7 +370,7 @@ const EVENT_IMAGES = {
   moon:
     "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=82",
   halloween:
-    "https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=2400&q=82",
+    "https://512pixels.net/downloads/macos-wallpapers/10-9.jpg",
   cityscape:
     "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
   underwater:
@@ -379,36 +379,36 @@ const EVENT_IMAGES = {
 
 const TECH_IMAGE_POOL: ImageEntry[] = [
   {
-    name: "Mac City Skyline Night",
-    url: "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
+    name: "macOS Sonoma Light",
+    url: "https://512pixels.net/downloads/macos-wallpapers/14-Sonoma-Light.jpg",
   },
   {
-    name: "Mac Urban Rooftop Light",
-    url: "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
+    name: "macOS Sequoia Light 6K",
+    url: "https://512pixels.net/downloads/macos-wallpapers/15-Sequoia-Light-6K.jpg",
   },
   {
-    name: "Mac Forest Nature Vista",
-    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2400&q=82",
+    name: "macOS Mavericks Wave",
+    url: "https://512pixels.net/downloads/macos-wallpapers/10-9.jpg",
   },
   {
-    name: "Mac Coastline Clarity",
-    url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2400&q=82",
+    name: "City Skyline Night",
+    url: "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2600&q=82",
   },
   {
-    name: "Mac Underwater Blue Pulse",
-    url: "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
+    name: "Urban Rooftop Skyline",
+    url: "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2600&q=82",
   },
   {
-    name: "Mac Deep Sea Gradient",
-    url: "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2400&q=82",
+    name: "Nature Landscape",
+    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2600&q=82",
   },
   {
-    name: "Mac Neon Tech Horizon",
-    url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2400&q=82",
+    name: "Underwater Blue World",
+    url: "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2600&q=82",
   },
   {
-    name: "Mac Glass Arc Night View",
-    url: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=2400&q=82",
+    name: "Deep Sea Fish",
+    url: "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2600&q=82",
   },
 ];
 
@@ -842,7 +842,7 @@ const applyVisualModeToTheme = (
       orbB: "rgba(168,85,247,0.18)",
       grid: "rgb(129, 140, 248)",
       shine: ["#4285f4", "#34a853", "#a855f7"],
-      subtitle: "Google / Gemini 轻奢极简",
+      subtitle: "轻奢极简",
     };
   }
   if (visualMode === "ocean") {
@@ -858,12 +858,12 @@ const applyVisualModeToTheme = (
       orbB: "rgba(45,212,191,0.24)",
       grid: "rgb(56, 189, 248)",
       shine: ["#0ea5e9", "#14b8a6", "#38bdf8"],
-      subtitle: "海风蓝调沉浸感",
+      subtitle: "蓝海清新",
     };
   }
   return {
     ...baseTheme,
-    subtitle: `${baseTheme.subtitle} · Tech`,
+    subtitle: "科技炫彩",
   };
 };
 

@@ -185,6 +185,10 @@ export default function ChatPage() {
 
   const [todoListCollapsed, setTodoListCollapsed] = useState(true);
   const [semanticReady, setSemanticReady] = useState(false);
+  const showWelcome = useMemo(() => {
+    if (isNewThread) return true;
+    return (thread.values.messages?.length ?? 0) === 0;
+  }, [isNewThread, thread.values.messages?.length]);
 
   useEffect(() => {
     setSemanticReady(false);
@@ -325,12 +329,12 @@ export default function ChatPage() {
                       className={cn(
                         "w-full -translate-y-4 border border-slate-200/85 bg-white/92 text-slate-900 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl",
                       )}
-                      isNewThread={isNewThread}
+                      isNewThread={showWelcome}
                       autoFocus={isNewThread}
                       status={thread.isLoading ? "streaming" : "ready"}
                       context={settings.context}
                       extraHeader={
-                        isNewThread && <Welcome mode={settings.context.mode} />
+                        showWelcome && <Welcome mode={settings.context.mode} />
                       }
                       disabled={env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY === "true"}
                       onContextChange={(context) =>

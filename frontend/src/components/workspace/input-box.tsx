@@ -408,7 +408,7 @@ export function InputBox({
         </PromptInputTools>
       </PromptInputFooter>
       {isNewThread && searchParams.get("mode") !== "skill" && (
-        <div className="absolute right-0 -bottom-20 left-0 z-0 flex items-center justify-center">
+        <div className="mt-4 flex items-center justify-center">
           <SuggestionList />
         </div>
       )}

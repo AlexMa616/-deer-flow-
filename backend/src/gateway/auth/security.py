@@ -9,7 +9,7 @@ SECRET_KEY = os.getenv(
     "deer-flow-data-platform-secret-key-change-in-production-2026",
 )
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1440  # 24 小时
+ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 天，减少频繁重登录造成的“刷新感”
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

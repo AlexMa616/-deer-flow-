@@ -2,21 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-interface OpenverseImage {
-  url?: string;
-  title?: string;
-  provider?: string;
-  creator?: string;
-  license?: string;
-  foreign_landing_url?: string;
-  width?: number | null;
-  height?: number | null;
-}
-
-interface OpenverseResponse {
-  results?: OpenverseImage[];
-}
-
 interface ThemeImagePayload {
   imageUrl: string;
   title: string;
@@ -31,7 +16,6 @@ interface ThemeImagePayload {
 type VisualMode = "tech" | "gemini" | "ocean";
 
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
-const OPENVERSE_TIMEOUT_MS = 1800;
 const themeImageCache = new Map<string, { expiresAt: number; payload: ThemeImagePayload }>();
 
 const EVENT_QUERY_POOL: Record<string, string[]> = {
@@ -238,48 +222,61 @@ const FALLBACK_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "fro
   tech: [
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2400&q=82",
-      title: "Mac Tech Glow",
-      provider: "Unsplash",
-      license: "Unsplash",
-      attribution: "Luke Chesser",
-      sourceUrl: "https://unsplash.com/photos/JKUTrJ4vK00",
+        "https://512pixels.net/downloads/macos-wallpapers/15-Sequoia-Light-6K.jpg",
+      title: "macOS Sequoia Light 6K",
+      provider: "512pixels",
+      license: "Editorial",
+      attribution: "Apple / 512pixels",
+      sourceUrl:
+        "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
-      title: "Mac Night City",
+        "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2600&q=82",
+      title: "City Skyline Night",
       provider: "Unsplash",
       license: "Unsplash",
       attribution: "Andres Siimon",
-      sourceUrl: "https://unsplash.com/photos/a-city-skyline-at-night-3Qzf-U0XfCE",
+      sourceUrl:
+        "https://unsplash.com/photos/a-city-skyline-at-night-3Qzf-U0XfCE",
     },
   ],
   gemini: [
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
-      title: "Mac Urban Rooftop",
+        "https://512pixels.net/downloads/macos-wallpapers/14-Sonoma-Light.jpg",
+      title: "macOS Sonoma Light",
+      provider: "512pixels",
+      license: "Editorial",
+      attribution: "Apple / 512pixels",
+      sourceUrl:
+        "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
+    },
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2600&q=82",
+      title: "Urban Rooftop Skyline",
       provider: "Unsplash",
       license: "Unsplash",
       attribution: "Mantas Hesthaven",
       sourceUrl:
         "https://unsplash.com/photos/rooftops-of-houses-with-city-skyline-in-background-S21CrCFzsSc",
     },
-    {
-      imageUrl:
-        "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=2400&q=82",
-      title: "City Reflection",
-      provider: "Unsplash",
-      license: "Unsplash",
-      attribution: "Denys Nevozhai",
-      sourceUrl: "https://unsplash.com/photos/guNIjIuUcgY",
-    },
   ],
   ocean: [
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
+        "https://512pixels.net/downloads/macos-wallpapers/10-9.jpg",
+      title: "macOS Mavericks Wave",
+      provider: "512pixels",
+      license: "Editorial",
+      attribution: "Apple / 512pixels",
+      sourceUrl:
+        "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
+    },
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2600&q=82",
       title: "Underwater Blue World",
       provider: "Unsplash",
       license: "Unsplash",
@@ -287,42 +284,32 @@ const FALLBACK_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "fro
       sourceUrl:
         "https://unsplash.com/photos/a-vibrant-blue-fish-swims-gracefully-underwater-ggw69SgTlNM",
     },
-    {
-      imageUrl:
-        "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2400&q=82",
-      title: "Deep Sea Fish",
-      provider: "Unsplash",
-      license: "Unsplash",
-      attribution: "Francesco Ungaro",
-      sourceUrl: "https://unsplash.com/photos/fishes-underwater-IjzFb5zEz68",
-    },
   ],
 };
 
 const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
-    title: "Mac Night City",
-    provider: "Unsplash",
-    license: "Unsplash",
-    attribution: "Andres Siimon",
-    sourceUrl: "https://unsplash.com/photos/a-city-skyline-at-night-3Qzf-U0XfCE",
+      "https://512pixels.net/downloads/macos-wallpapers/15-Sequoia-Light-6K.jpg",
+    title: "macOS Sequoia Light 6K",
+    provider: "512pixels",
+    license: "Editorial",
+    attribution: "Apple / 512pixels",
+    sourceUrl: "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
-    title: "Mac Urban Rooftop",
-    provider: "Unsplash",
-    license: "Unsplash",
-    attribution: "Mantas Hesthaven",
-    sourceUrl:
-      "https://unsplash.com/photos/rooftops-of-houses-with-city-skyline-in-background-S21CrCFzsSc",
+      "https://512pixels.net/downloads/macos-wallpapers/14-Sonoma-Light.jpg",
+    title: "macOS Sonoma Light",
+    provider: "512pixels",
+    license: "Editorial",
+    attribution: "Apple / 512pixels",
+    sourceUrl: "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2400&q=82",
-    title: "Mac Nature Landscape",
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2600&q=82",
+    title: "Nature Landscape",
     provider: "Unsplash",
     license: "Unsplash",
     attribution: "Alejandro Escamilla",
@@ -330,7 +317,16 @@ const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
+      "https://512pixels.net/downloads/macos-wallpapers/10-9.jpg",
+    title: "macOS Mavericks Wave",
+    provider: "512pixels",
+    license: "Editorial",
+    attribution: "Apple / 512pixels",
+    sourceUrl: "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
+  },
+  {
+    imageUrl:
+      "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2600&q=82",
     title: "Mac Underwater Blue",
     provider: "Unsplash",
     license: "Unsplash",
@@ -340,7 +336,7 @@ const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2400&q=82",
+      "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2600&q=82",
     title: "Mac Deep Sea Fish",
     provider: "Unsplash",
     license: "Unsplash",
@@ -405,66 +401,6 @@ function resolveQueries(
   return unique.length > 0 ? unique : [...modeQueries, ...DAILY_QUERY_POOL];
 }
 
-function normalizeOpenverseUrl(url: string): string | null {
-  if (!url || !/^https?:\/\//.test(url)) return null;
-  const lowered = url.toLowerCase();
-  if (lowered.endsWith(".svg")) return null;
-  if (lowered.includes("images.unsplash.com")) {
-    const parsed = new URL(url);
-    parsed.searchParams.set("auto", "format");
-    parsed.searchParams.set("fit", "crop");
-    parsed.searchParams.set("w", "1280");
-    parsed.searchParams.set("q", "78");
-    return parsed.toString();
-  }
-  return url;
-}
-
-async function fetchFromOpenverse(query: string, seed: number): Promise<ThemeImagePayload | null> {
-  const api = new URL("https://api.openverse.org/v1/images");
-  api.searchParams.set("q", query);
-  api.searchParams.set("page_size", "24");
-  api.searchParams.set("mature", "false");
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), OPENVERSE_TIMEOUT_MS);
-  const response = await fetch(api.toString(), {
-    method: "GET",
-    headers: { Accept: "application/json" },
-    next: { revalidate: 60 * 60 * 6 },
-    signal: controller.signal,
-  }).finally(() => clearTimeout(timeout));
-
-  if (!response.ok) return null;
-
-  const data = (await response.json()) as OpenverseResponse;
-  const valid = (data.results ?? []).filter((item) => {
-    const url = normalizeOpenverseUrl(item.url ?? "");
-    if (!url) return false;
-    if (typeof item.width === "number" && item.width > 0 && item.width < 900) return false;
-    if (typeof item.height === "number" && item.height > 0 && item.height < 500) return false;
-    return true;
-  });
-
-  if (valid.length === 0) return null;
-
-  const picked = pickFromPool(valid, seed);
-  const imageUrl = normalizeOpenverseUrl(picked.url ?? "");
-  if (!imageUrl) return null;
-  const normalizedTitle = picked.title?.trim();
-
-  return {
-    imageUrl,
-    title: normalizedTitle && normalizedTitle.length > 0 ? normalizedTitle : "Daily Theme Image",
-    provider: picked.provider ?? "Openverse",
-    license: picked.license ?? "Unknown",
-    attribution: picked.creator ?? "Openverse",
-    sourceUrl: picked.foreign_landing_url ?? imageUrl,
-    query,
-    from: "openverse",
-  };
-}
-
 function fallbackPayload(
   seed: number,
   query: string,
@@ -505,19 +441,9 @@ export async function GET(request: NextRequest) {
   const seed = hashSeed(`${cacheKey}::${nonce}`);
   const queries = resolveQueries(eventName, keywords, visualMode);
 
-  let payload: ThemeImagePayload | null = null;
-  const attempts = forceRefresh ? 3 : 1;
-  for (let i = 0; i < Math.min(queries.length, attempts); i += 1) {
-    const query = queries[(seed + i) % queries.length]!;
-    try {
-      payload = await fetchFromOpenverse(query, seed + i * 17);
-      if (payload) break;
-    } catch {
-      payload = null;
-    }
-  }
-
-  payload ??= fallbackPayload(seed, queries[0] ?? "daily tech theme", visualMode);
+  // Use curated high-quality wallpaper pools for faster and more stable loading.
+  // This avoids remote search latency and random low-quality results.
+  const payload = fallbackPayload(seed, queries[0] ?? "daily mac wallpaper", visualMode);
 
   themeImageCache.set(cacheKey, {
     expiresAt: now + CACHE_TTL_MS,

@@ -21,6 +21,7 @@ import {
   type BilingualViewMode,
   useBilingualViewMode,
 } from "./bilingual-view";
+import { formatDescriptionByMode } from "./description-translate";
 import { SettingsSection } from "./settings-section";
 
 export function ToolSettingsPage() {
@@ -73,11 +74,6 @@ function MCPServerList({
   viewMode: BilingualViewMode;
 }) {
   const { mutate: enableMCPServer } = useEnableMCPServer();
-  const extraHint = formatBilingualText(
-    viewMode,
-    "原始说明由服务端提供，如未翻译将保留英文。",
-    "Descriptions come from server metadata and may remain in English.",
-  );
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -89,11 +85,8 @@ function MCPServerList({
                 <div>{name}</div>
               </div>
             </ItemTitle>
-            <ItemDescription className="line-clamp-4">
-              <div>{config.description}</div>
-              {viewMode !== "en" ? (
-                <div className="mt-1 text-[11px] text-slate-500">{extraHint}</div>
-              ) : null}
+            <ItemDescription className="whitespace-pre-line text-slate-600">
+              {formatDescriptionByMode(viewMode, config.description ?? "")}
             </ItemDescription>
           </ItemContent>
           <ItemActions>

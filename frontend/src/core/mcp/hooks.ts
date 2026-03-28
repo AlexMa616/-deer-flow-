@@ -6,6 +6,9 @@ export function useMCPConfig() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["mcpConfig"],
     queryFn: () => loadMCPConfig(),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: 10 * 60 * 1000,
   });
   return { config: data, isLoading, error };
 }

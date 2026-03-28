@@ -8,6 +8,9 @@ export function useSkills() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["skills"],
     queryFn: () => loadSkills(),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: 10 * 60 * 1000,
   });
   return { skills: data ?? [], isLoading, error };
 }

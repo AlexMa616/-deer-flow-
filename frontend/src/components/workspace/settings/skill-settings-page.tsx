@@ -37,6 +37,7 @@ import {
   type BilingualViewMode,
   useBilingualViewMode,
 } from "./bilingual-view";
+import { formatDescriptionByMode } from "./description-translate";
 import { SettingsSection } from "./settings-section";
 
 export function SkillSettingsPage({ onClose }: { onClose?: () => void } = {}) {
@@ -180,8 +181,8 @@ function SkillSettingsList({
                   )}
                 </div>
               </ItemTitle>
-              <ItemDescription className="line-clamp-4 text-slate-600">
-                {skill.description}
+              <ItemDescription className="whitespace-pre-line text-slate-600">
+                {formatDescriptionByMode(viewMode, skill.description ?? "")}
               </ItemDescription>
             </ItemContent>
             <ItemActions>
