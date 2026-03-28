@@ -146,7 +146,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
       <Collapsible open={open} onOpenChange={setOpen}>
         <CollapsibleTrigger asChild>
           <Button
-            className="border-slate-200/80 bg-white text-slate-700 shadow-sm backdrop-blur hover:bg-slate-50"
+            className="border-slate-200/90 bg-white text-slate-700 shadow-sm backdrop-blur hover:bg-slate-50"
             size="sm"
             variant="outline"
             type="button"
@@ -163,7 +163,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-3">
           <div
-            className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/96 shadow-[0_14px_36px_rgba(15,23,42,0.08)] backdrop-blur"
+            className="relative overflow-hidden rounded-2xl border border-slate-200/85 bg-[#f8fbff]/98 shadow-[0_14px_36px_rgba(15,23,42,0.08)] backdrop-blur"
             style={{
               padding: "1rem",
             }}
@@ -178,7 +178,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                   size="sm"
                   variant="ghost"
                   type="button"
-                  className="h-7 px-2 text-xs"
+                  className="h-7 px-2 text-xs text-slate-600 hover:bg-slate-100"
                   onClick={handleReindex}
                   disabled={reindexMutation.isPending}
                 >
@@ -210,6 +210,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                     type="button"
                     onClick={() => void handleSearch()}
                     disabled={searchMutation.isPending || query.trim().length < 2}
+                    className="h-9 border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100"
                   >
                     <SearchIcon className="size-4" />
                     检索
@@ -308,7 +309,7 @@ export function SemanticSearchPanel({ threadId, className }: SemanticPanelProps)
                     检索失败：{searchMutation.error.message}
                   </div>
                 ) : null}
-                <ScrollArea className="h-[240px] rounded-xl border border-slate-200/80 bg-white p-2">
+                <ScrollArea className="h-[240px] rounded-xl border border-slate-200/80 bg-[#fbfdff] p-2">
                   {searchMutation.isPending ? (
                     <div className="p-3 text-xs text-slate-500">
                       正在扫描向量空间...

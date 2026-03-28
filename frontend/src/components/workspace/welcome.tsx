@@ -18,8 +18,9 @@ export function Welcome({
   const isSkillMode = searchParams.get("mode") === "skill";
   const isChinese = /[\u4e00-\u9fff]/.test(t.welcome.greeting);
 
-  const heroGreeting = isChinese ? "Alex，欢迎回来" : "Welcome back, Alex";
-  const heroQuestion = isChinese ? "需要我为你做些什么？" : t.inputBox.placeholder;
+  const heroQuestion = isChinese
+    ? "你好，需要我为你做些什么？"
+    : "Hello, what can I help you with?";
   const heroDescription = isChinese
     ? "我可以帮你搜索信息、分析文档、生成图片和视频，也可以协助写作、学习与创作。"
     : "I can search the web, analyze files, generate images and videos, and assist with writing and study.";
@@ -55,9 +56,11 @@ export function Welcome({
       <div className="inline-flex items-center gap-2.5 rounded-full border border-slate-200/80 bg-white/86 px-3 py-2 text-slate-700 shadow-[0_8px_24px_rgba(15,23,42,0.06)] backdrop-blur">
         <SparklesIcon className="size-4 text-indigo-500" />
         <AlexMark compact className="h-8 w-8 rounded-lg" />
-        <span className="text-lg font-medium tracking-tight">{heroGreeting}</span>
+        <span className="text-lg font-medium tracking-tight">
+          {isChinese ? "Alex，欢迎回来" : "Welcome back, Alex"}
+        </span>
       </div>
-      <h1 className="text-[1.2rem] leading-[1.25] font-black tracking-tight text-slate-900 md:text-[1.35rem]">
+      <h1 className="text-[1.08rem] leading-[1.25] font-black tracking-tight text-slate-900 md:text-[1.22rem]">
         {heroQuestion}
       </h1>
       <p className="max-w-3xl text-sm leading-6 text-slate-500">

@@ -232,7 +232,7 @@ const FALLBACK_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "fro
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2600&q=82",
+        "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=1800&q=82",
       title: "City Skyline Night",
       provider: "Unsplash",
       license: "Unsplash",
@@ -254,7 +254,7 @@ const FALLBACK_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "fro
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2600&q=82",
+        "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=1800&q=82",
       title: "Urban Rooftop Skyline",
       provider: "Unsplash",
       license: "Unsplash",
@@ -276,13 +276,80 @@ const FALLBACK_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "fro
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2600&q=82",
+        "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=1800&q=82",
       title: "Underwater Blue World",
       provider: "Unsplash",
       license: "Unsplash",
       attribution: "Natalia Blauth",
       sourceUrl:
         "https://unsplash.com/photos/a-vibrant-blue-fish-swims-gracefully-underwater-ggw69SgTlNM",
+    },
+  ],
+};
+
+const FAST_REFRESH_IMAGES: Record<VisualMode, Omit<ThemeImagePayload, "query" | "from">[]> = {
+  tech: [
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=1600&q=78",
+      title: "City Skyline Night",
+      provider: "Unsplash",
+      license: "Unsplash",
+      attribution: "Andres Siimon",
+      sourceUrl:
+        "https://unsplash.com/photos/a-city-skyline-at-night-3Qzf-U0XfCE",
+    },
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=1600&q=78",
+      title: "Urban Rooftop Skyline",
+      provider: "Unsplash",
+      license: "Unsplash",
+      attribution: "Mantas Hesthaven",
+      sourceUrl:
+        "https://unsplash.com/photos/rooftops-of-houses-with-city-skyline-in-background-S21CrCFzsSc",
+    },
+  ],
+  gemini: [
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=1600&q=78",
+      title: "Urban Rooftop Skyline",
+      provider: "Unsplash",
+      license: "Unsplash",
+      attribution: "Mantas Hesthaven",
+      sourceUrl:
+        "https://unsplash.com/photos/rooftops-of-houses-with-city-skyline-in-background-S21CrCFzsSc",
+    },
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=78",
+      title: "Nature Landscape",
+      provider: "Unsplash",
+      license: "Unsplash",
+      attribution: "Alejandro Escamilla",
+      sourceUrl: "https://unsplash.com/photos/yC-Yzbqy7PY",
+    },
+  ],
+  ocean: [
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=1600&q=78",
+      title: "Underwater Blue World",
+      provider: "Unsplash",
+      license: "Unsplash",
+      attribution: "Natalia Blauth",
+      sourceUrl:
+        "https://unsplash.com/photos/a-vibrant-blue-fish-swims-gracefully-underwater-ggw69SgTlNM",
+    },
+    {
+      imageUrl:
+        "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=1600&q=78",
+      title: "Deep Sea Fish",
+      provider: "Unsplash",
+      license: "Unsplash",
+      attribution: "Francesco Ungaro",
+      sourceUrl: "https://unsplash.com/photos/fishes-underwater-IjzFb5zEz68",
     },
   ],
 };
@@ -308,7 +375,7 @@ const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2600&q=82",
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=82",
     title: "Nature Landscape",
     provider: "Unsplash",
     license: "Unsplash",
@@ -326,7 +393,7 @@ const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2600&q=82",
+      "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=1800&q=82",
     title: "Mac Underwater Blue",
     provider: "Unsplash",
     license: "Unsplash",
@@ -336,7 +403,7 @@ const DEFAULT_FALLBACK_IMAGES: Omit<ThemeImagePayload, "query" | "from">[] = [
   },
   {
     imageUrl:
-      "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2600&q=82",
+      "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=1800&q=82",
     title: "Mac Deep Sea Fish",
     provider: "Unsplash",
     license: "Unsplash",
@@ -405,9 +472,15 @@ function fallbackPayload(
   seed: number,
   query: string,
   visualMode: VisualMode,
+  forceRefresh: boolean,
 ): ThemeImagePayload {
-  const modePool = FALLBACK_IMAGES[visualMode] ?? DEFAULT_FALLBACK_IMAGES;
-  const base = pickFromPool(modePool, seed);
+  const modePool = forceRefresh
+    ? FAST_REFRESH_IMAGES[visualMode]
+    : FALLBACK_IMAGES[visualMode];
+  const targetPool = modePool && modePool.length > 0
+    ? modePool
+    : DEFAULT_FALLBACK_IMAGES;
+  const base = pickFromPool(targetPool, seed);
   return {
     ...base,
     query,
@@ -443,7 +516,12 @@ export async function GET(request: NextRequest) {
 
   // Use curated high-quality wallpaper pools for faster and more stable loading.
   // This avoids remote search latency and random low-quality results.
-  const payload = fallbackPayload(seed, queries[0] ?? "daily mac wallpaper", visualMode);
+  const payload = fallbackPayload(
+    seed,
+    queries[0] ?? "daily mac wallpaper",
+    visualMode,
+    forceRefresh,
+  );
 
   themeImageCache.set(cacheKey, {
     expiresAt: now + CACHE_TTL_MS,

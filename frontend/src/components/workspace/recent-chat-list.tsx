@@ -136,6 +136,7 @@ export function RecentChatList() {
                         <Link
                           className="text-muted-foreground block w-full whitespace-nowrap group-hover/side-menu-item:overflow-hidden"
                           href={pathOfThread(thread.thread_id)}
+                          prefetch={false}
                         >
                           {titleOfThread(thread)}
                         </Link>

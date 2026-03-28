@@ -21,15 +21,13 @@ import {
   type BilingualViewMode,
   useBilingualViewMode,
 } from "./bilingual-view";
-import { formatDescriptionByMode } from "./description-translate";
+import { formatDescriptionByMode, formatNameByMode } from "./description-translate";
 import { SettingsSection } from "./settings-section";
 
 export function ToolSettingsPage() {
-  const { locale } = useI18n();
+  useI18n();
   const { config, isLoading, error } = useMCPConfig();
-  const [viewMode, setViewMode] = useBilingualViewMode(
-    locale === "zh-CN" ? "zh" : "en",
-  );
+  const [viewMode, setViewMode] = useBilingualViewMode("both");
   const title = formatBilingualText(
     viewMode,
     zhCN.settings.tools.title,
@@ -81,8 +79,8 @@ function MCPServerList({
         <Item className="w-full" variant="outline" key={name}>
           <ItemContent>
             <ItemTitle>
-              <div className="flex items-center gap-2">
-                <div>{name}</div>
+                <div className="flex items-center gap-2">
+                <div>{formatNameByMode(viewMode, name)}</div>
               </div>
             </ItemTitle>
             <ItemDescription className="whitespace-pre-line text-slate-600">

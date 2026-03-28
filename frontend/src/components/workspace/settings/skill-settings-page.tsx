@@ -37,15 +37,17 @@ import {
   type BilingualViewMode,
   useBilingualViewMode,
 } from "./bilingual-view";
-import { formatDescriptionByMode } from "./description-translate";
+import {
+  formatDescriptionByMode,
+  formatLicenseByMode,
+  formatNameByMode,
+} from "./description-translate";
 import { SettingsSection } from "./settings-section";
 
 export function SkillSettingsPage({ onClose }: { onClose?: () => void } = {}) {
-  const { locale } = useI18n();
+  useI18n();
   const { skills, isLoading, error } = useSkills();
-  const [viewMode, setViewMode] = useBilingualViewMode(
-    locale === "zh-CN" ? "zh" : "en",
-  );
+  const [viewMode, setViewMode] = useBilingualViewMode("both");
 
   return (
     <SettingsSection
@@ -173,10 +175,10 @@ function SkillSettingsList({
             <ItemContent>
               <ItemTitle>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span>{skill.name}</span>
+                  <span>{formatNameByMode(viewMode, skill.name)}</span>
                   {skill.license && (
                     <Badge variant="outline" className="text-[10px] uppercase">
-                      {skill.license}
+                      {formatLicenseByMode(viewMode, skill.license)}
                     </Badge>
                   )}
                 </div>

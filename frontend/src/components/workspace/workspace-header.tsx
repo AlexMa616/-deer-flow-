@@ -38,7 +38,11 @@ export function WorkspaceHeader({ className }: { className?: string }) {
         ) : (
           <div className="flex items-center justify-between gap-2">
             {env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY === "true" ? (
-              <Link href="/" className="ml-2 inline-flex items-center gap-2">
+              <Link
+                href="/"
+                prefetch={false}
+                className="ml-2 inline-flex items-center gap-2"
+              >
                 <AlexMark compact className="h-8 w-8 rounded-lg" />
                 <span className="text-primary font-serif tracking-wide">Alex</span>
               </Link>
@@ -58,7 +62,11 @@ export function WorkspaceHeader({ className }: { className?: string }) {
             isActive={pathname === "/workspace/chats/new"}
             asChild
           >
-            <Link className="text-muted-foreground" href="/workspace/chats/new">
+            <Link
+              className="text-muted-foreground"
+              href="/workspace/chats/new"
+              prefetch={false}
+            >
               <MessageSquarePlus size={16} />
               <span>{t.sidebar.newChat}</span>
             </Link>

@@ -286,7 +286,7 @@ const VISUAL_MODES: Record<VisualMode, VisualModeConfig> = {
 };
 
 const LOGIN_THEME_MODE_STORAGE_KEY = "deerflow.login.visual-mode.v2";
-const THEME_IMAGE_CACHE_PREFIX = "deerflow.login.theme-image.v6";
+const THEME_IMAGE_CACHE_PREFIX = "deerflow.login.theme-image.v7";
 
 const getStoredVisualMode = (): VisualMode | null => {
   if (typeof window === "undefined") return null;
@@ -358,23 +358,23 @@ const EVENT_IMAGES = {
   lanternsAlt:
     "https://512pixels.net/downloads/macos-wallpapers/15-Sequoia-Light-6K.jpg",
   shamrock:
-    "https://images.unsplash.com/photo-1526045478516-99145907023c?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1526045478516-99145907023c?auto=format&fit=crop&w=1800&q=82",
   hearts:
-    "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1800&q=82",
   fireworks:
-    "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=1800&q=82",
   forest:
-    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=82",
   dragonBoat:
-    "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1800&q=82",
   moon:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=82",
   halloween:
     "https://512pixels.net/downloads/macos-wallpapers/10-9.jpg",
   cityscape:
-    "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=1800&q=82",
   underwater:
-    "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2400&q=82",
+    "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=1800&q=82",
 };
 
 const TECH_IMAGE_POOL: ImageEntry[] = [
@@ -392,23 +392,23 @@ const TECH_IMAGE_POOL: ImageEntry[] = [
   },
   {
     name: "City Skyline Night",
-    url: "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=2600&q=82",
+    url: "https://images.unsplash.com/photo-1654832544261-d9639df991de?auto=format&fit=crop&w=1800&q=82",
   },
   {
     name: "Urban Rooftop Skyline",
-    url: "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=2600&q=82",
+    url: "https://images.unsplash.com/photo-1754972722440-f7e7f366bc01?auto=format&fit=crop&w=1800&q=82",
   },
   {
     name: "Nature Landscape",
-    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2600&q=82",
+    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=82",
   },
   {
     name: "Underwater Blue World",
-    url: "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=2600&q=82",
+    url: "https://images.unsplash.com/photo-1752934654942-38e8b54259b6?auto=format&fit=crop&w=1800&q=82",
   },
   {
     name: "Deep Sea Fish",
-    url: "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=2600&q=82",
+    url: "https://images.unsplash.com/photo-1459743421941-c1caaf5a232f?auto=format&fit=crop&w=1800&q=82",
   },
 ];
 
@@ -928,6 +928,31 @@ const getDailyImage = (dayKey: string, event?: SpecialEvent) => {
   return TECH_IMAGE_POOL[index]?.url ?? EVENT_IMAGES.forest;
 };
 
+const getModeImagePool = (mode: VisualMode): ImageEntry[] => {
+  if (mode === "tech") {
+    return [
+      TECH_IMAGE_POOL[3]!,
+      TECH_IMAGE_POOL[0]!,
+      TECH_IMAGE_POOL[1]!,
+      TECH_IMAGE_POOL[4]!,
+    ];
+  }
+  if (mode === "gemini") {
+    return [
+      TECH_IMAGE_POOL[0]!,
+      TECH_IMAGE_POOL[4]!,
+      TECH_IMAGE_POOL[5]!,
+      TECH_IMAGE_POOL[1]!,
+    ];
+  }
+  return [
+    TECH_IMAGE_POOL[6]!,
+    TECH_IMAGE_POOL[7]!,
+    TECH_IMAGE_POOL[2]!,
+    TECH_IMAGE_POOL[5]!,
+  ];
+};
+
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -1119,6 +1144,21 @@ export default function LoginPage() {
   ]);
 
   const handleRefreshThemeImage = () => {
+    const modePool = getModeImagePool(visualMode).filter(Boolean);
+    if (modePool.length > 0) {
+      const seed = hashSeed(`${dayKey}-${visualMode}-${Date.now()}`);
+      const picked = modePool[seed % modePool.length]!;
+      setThemeImage({
+        imageUrl: picked.url,
+        title: picked.name,
+        provider: "在线图池",
+        license: "Editorial",
+        attribution: "Apple/Unsplash",
+        sourceUrl: picked.url,
+        query: `${visualMode}-manual-refresh`,
+        from: "fallback",
+      });
+    }
     forceRefreshImageRef.current = true;
     setImageRequestVersion((current) => current + 1);
   };

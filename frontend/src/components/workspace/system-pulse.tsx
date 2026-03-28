@@ -100,7 +100,7 @@ export function SystemPulse({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative shrink-0 overflow-hidden rounded-2xl border border-sky-200/70 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.25),transparent_65%),linear-gradient(145deg,#ffffff,#eef2ff)] px-3 py-3 text-slate-900 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur",
+        "relative shrink-0 rounded-2xl border border-sky-200/70 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.25),transparent_65%),linear-gradient(145deg,#ffffff,#eef2ff)] px-3 py-3.5 text-slate-900 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur",
         className,
       )}
     >

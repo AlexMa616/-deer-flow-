@@ -186,6 +186,9 @@ export function useThreads(
       const response = await apiClient.threads.search<AgentThreadState>(params);
       return response as AgentThread[];
     },
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: 10 * 60 * 1000,
   });
 }
 

@@ -157,7 +157,7 @@ export function InputBox({
   return (
     <PromptInput
       className={cn(
-        "rounded-[32px] border border-slate-200/80 bg-white/92 shadow-[0_18px_48px_rgba(15,23,42,0.08)] backdrop-blur transition-all duration-300 ease-out [&_[data-slot='input-group']]:rounded-[32px] [&_[data-slot='input-group']]:overflow-hidden [&_[data-slot='input-group']]:border-slate-200/80 [&_[data-slot='input-group']]:bg-white/94",
+        "rounded-[32px] border border-slate-200/80 bg-white/92 shadow-[0_18px_48px_rgba(15,23,42,0.08)] backdrop-blur transition-all duration-300 ease-out [&_[data-slot='input-group']]:rounded-[32px] [&_[data-slot='input-group']]:overflow-hidden [&_[data-slot='input-group']]:border-slate-200/80 [&_[data-slot='input-group']]:bg-white/94 [&_[data-slot='input-group']]:focus-within:ring-0 [&_[data-slot='input-group']]:focus-within:border-slate-300",
         className,
       )}
       disabled={disabled}
@@ -185,7 +185,7 @@ export function InputBox({
           defaultValue={initialValue}
         />
       </PromptInputBody>
-      <PromptInputFooter className="flex items-center justify-between gap-3 border-t border-slate-200/70 bg-white/86 px-3 py-2.5">
+      <PromptInputFooter className="flex items-center justify-between gap-3 rounded-b-[32px] border-t border-slate-200/70 bg-white/86 px-3 py-2.5">
         <PromptInputTools className="items-center gap-1 rounded-full border border-slate-200/85 bg-white px-1 py-1 shadow-[0_6px_16px_rgba(15,23,42,0.05)]">
           {/* TODO: Add more connectors here
           <PromptInputActionMenu>

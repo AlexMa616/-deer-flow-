@@ -187,8 +187,38 @@ export default function ChatPage() {
   const [semanticReady, setSemanticReady] = useState(false);
   const showWelcome = useMemo(() => {
     if (isNewThread) return true;
-    return (thread.values.messages?.length ?? 0) === 0;
-  }, [isNewThread, thread.values.messages?.length]);
+    const messages = (thread.values.messages ?? []) as Message[];
+    const hasConversation = messages.some((message) => {
+      const role = (message as { type?: string; role?: string }).type
+        ?? (message as { type?: string; role?: string }).role;
+      if (role !== "human" && role !== "ai" && role !== "user" && role !== "assistant") {
+        return false;
+      }
+      const content = (message as { content?: unknown }).content;
+      let text = "";
+      if (typeof content === "string") {
+        text = content;
+      } else if (Array.isArray(content)) {
+        text = content
+          .map((item) => {
+            if (typeof item === "string") return item;
+            if (
+              typeof item === "object" &&
+              item !== null &&
+              "text" in item &&
+              typeof (item as { text?: unknown }).text === "string"
+            ) {
+              return (item as { text: string }).text;
+            }
+            return "";
+          })
+          .join(" ");
+      }
+      text = text.trim();
+      return text.length > 0;
+    });
+    return !hasConversation;
+  }, [isNewThread, thread.values.messages]);
 
   useEffect(() => {
     setSemanticReady(false);
@@ -325,17 +355,19 @@ export default function ChatPage() {
                     </div>
                   </div>
                   <div className="relative">
+                    {showWelcome && (
+                      <div className="mb-3">
+                        <Welcome mode={settings.context.mode} />
+                      </div>
+                    )}
                     <InputBox
                       className={cn(
                         "w-full -translate-y-4 border border-slate-200/85 bg-white/92 text-slate-900 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl",
                       )}
                       isNewThread={showWelcome}
-                      autoFocus={isNewThread}
+                      autoFocus={false}
                       status={thread.isLoading ? "streaming" : "ready"}
                       context={settings.context}
-                      extraHeader={
-                        showWelcome && <Welcome mode={settings.context.mode} />
-                      }
                       disabled={env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY === "true"}
                       onContextChange={(context) =>
                         setSettings("context", context)

@@ -211,7 +211,7 @@ start_all() {
     rm -rf "$FRONTEND_DIR/.next"
   fi
 
-  start_process "frontend" "$FRONTEND_DIR" pnpm exec next dev --turbo --port "$PORT_FRONTEND"
+  start_process "frontend" "$FRONTEND_DIR" pnpm exec next dev --port "$PORT_FRONTEND"
   wait_for_http "http://127.0.0.1:${PORT_FRONTEND}" 60 || {
     print "Frontend 启动失败，请查看 $LOG_DIR/frontend.log"
     exit 1
